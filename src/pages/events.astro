@@ -32,27 +32,20 @@ function formatDate(dateString: string): string {
 
 <BaseLayout title="Events - Yufang Zhang Ceramics" description="Upcoming pottery workshops, exhibitions, and events">
   <div class="max-w-4xl mx-auto">
-    <!-- Page Header -->
-    <section class="text-center py-12 md:py-16 border-b border-zinc-200">
-      <h1 class="text-4xl md:text-5xl font-light text-zinc-900 tracking-wide">
-        Events
-      </h1>
-    </section>
-
-    <div class="py-16">
+    <div class="py-12">
       <!-- Upcoming Events -->
       {upcomingEvents.length > 0 && (
-        <section class="mb-20">
-          <h2 class="text-2xl font-light text-zinc-900 mb-10 pb-3 border-b border-zinc-200 tracking-wide">
+        <section class="mb-32">
+          <h2 class="text-3xl font-serif font-light text-stone-grey mb-12 tracking-wide italic">
             Upcoming
           </h2>
-          <div class="space-y-10">
+          <div class="space-y-12">
             {upcomingEvents.map((event) => (
-              <article class="border-b border-zinc-100 pb-10 last:border-b-0">
-                <h3 class="text-2xl font-light text-zinc-900 mb-4 tracking-wide">
+              <article class="pb-12 last:pb-0">
+                <h3 class="text-2xl font-serif font-light text-stone-grey mb-4 tracking-wide italic">
                   {event.title}
                 </h3>
-                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-zinc-600 mb-5 tracking-wide">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-clay-muted mb-5 tracking-wide metadata">
                   <time class="flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -69,7 +62,7 @@ function formatDate(dateString: string): string {
                   </span>
                 </div>
                 {event.description && (
-                  <p class="text-zinc-700 mb-5 leading-relaxed tracking-wide">
+                  <p class="text-stone-grey mb-5 leading-relaxed tracking-wide font-light">
                     {event.description}
                   </p>
                 )}
@@ -78,7 +71,7 @@ function formatDate(dateString: string): string {
                     href={event.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 text-zinc-900 hover:text-zinc-600 transition-colors duration-200 tracking-wide"
+                    class="inline-flex items-center gap-2 text-stone-grey hover:opacity-70 transition-opacity duration-200 tracking-wide metadata"
                   >
                     Learn more
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,18 +88,18 @@ function formatDate(dateString: string): string {
       <!-- Past Events -->
       {pastEvents.length > 0 && (
         <section>
-          <h2 class="text-2xl font-light text-zinc-900 mb-10 pb-3 border-b border-zinc-200 tracking-wide">
+          <h2 class="text-3xl font-serif font-light text-stone-grey mb-12 tracking-wide italic">
             Past Events
           </h2>
-          <div class="space-y-8 opacity-60">
+          <div class="space-y-10 opacity-60">
             {pastEvents.map((event) => (
-              <article class="border-b border-zinc-100 pb-8 last:border-b-0">
-                <h3 class="text-xl font-light text-zinc-900 mb-3 tracking-wide">
+              <article class="pb-10 last:pb-0">
+                <h3 class="text-xl font-serif font-light text-stone-grey mb-3 tracking-wide italic">
                   {event.title}
                 </h3>
-                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-zinc-600 text-sm tracking-wide">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-clay-muted text-sm tracking-wide metadata">
                   <time>{formatDate(event.date)}</time>
-                  <span class="hidden sm:block text-zinc-400">•</span>
+                  <span class="hidden sm:block text-clay-muted">•</span>
                   <span>{event.location}</span>
                 </div>
               </article>
@@ -116,8 +109,8 @@ function formatDate(dateString: string): string {
       )}
 
       {events.length === 0 && (
-        <div class="text-center py-20">
-          <p class="text-zinc-500 text-lg tracking-wide">
+        <div class="text-center py-32">
+          <p class="text-clay-muted text-lg tracking-wide font-light">
             No events scheduled at the moment. Check back soon!
           </p>
         </div>

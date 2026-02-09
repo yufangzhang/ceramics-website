@@ -11,7 +11,7 @@ const mainImage = work.images[0];
 ---
 
 <article
-  class="group cursor-pointer work-card"
+  class="group cursor-pointer work-card flex flex-col"
   data-work-id={work._id}
   data-work-title={work.title}
   data-work-year={work.year}
@@ -19,28 +19,27 @@ const mainImage = work.images[0];
   data-work-description={work.description || ''}
   data-work-images={JSON.stringify(work.images)}
 >
-  <!-- Image -->
-  <div class="aspect-square overflow-hidden bg-zinc-100 mb-4">
+  <!-- Image with flexible aspect ratio -->
+  <div class="mb-6 overflow-hidden bg-zinc-50">
     <img
       src={urlFor(mainImage)
-        .width(800)
-        .height(800)
-        .fit('crop')
-        .auto('format')
-        .quality(90)
+        .width(1200)
+        .format('webp')
+        .quality(85)
         .url()}
       alt={work.title}
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+      class="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-700 ease-out"
       loading="lazy"
+      onload="this.classList.add('loaded')"
     />
   </div>
 
   <!-- Details -->
-  <div class="space-y-1">
-    <h3 class="text-lg font-light text-zinc-900 tracking-wide">
+  <div class="space-y-2">
+    <h3 class="text-2xl font-serif font-light text-stone-grey italic">
       {work.title}
     </h3>
-    <p class="text-sm text-zinc-500 tracking-wide">
+    <p class="metadata text-clay-muted">
       {work.year}{work.dimensions ? ` • ${work.dimensions}` : ''}
     </p>
   </div>

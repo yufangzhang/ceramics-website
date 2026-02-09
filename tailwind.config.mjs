@@ -4,10 +4,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        serif: ['Playfair Display', 'serif'],
+        serif: ['Cormorant Garamond', 'serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        'gallery-white': '#FAF9F6',
+        'stone-grey': '#2D2D2D',
+        'clay-muted': '#A3A3A3',
         clay: {
           50: '#faf8f5',
           100: '#f2ede4',

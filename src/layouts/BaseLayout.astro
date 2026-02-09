@@ -7,6 +7,12 @@ interface Props {
 const { title, description = "Handcrafted pottery with soul" } = Astro.props;
 const currentPath = Astro.url.pathname;
 const baseUrl = import.meta.env.BASE_URL;
+
+// Helper to create proper links for both dev and production
+const link = (path: string) => {
+  if (baseUrl === '/') return path;
+  return `${baseUrl}${path}`;
+};
 ---
 
 <!doctype html>
@@ -19,21 +25,45 @@ const baseUrl = import.meta.env.BASE_URL;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
     <script>
       import '../lib/sentry';
     </script>
+    <style is:global>
+      /* Typography */
+      h1, h2, h3, h4, .font-serif {
+        font-family: 'Cormorant Garamond', serif;
+        font-style: italic;
+      }
+
+      nav a, .metadata, .uppercase {
+        font-family: 'Inter', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.7rem;
+      }
+
+      /* Subtle image fade-in */
+      img {
+        opacity: 0;
+        transition: opacity 1.2s ease-in-out;
+      }
+
+      img.loaded {
+        opacity: 1;
+      }
+    </style>
   </head>
-  <body class="min-h-screen bg-white text-zinc-800 font-sans antialiased">
+  <body class="min-h-screen bg-gallery-white text-stone-grey font-sans antialiased">
     <!-- Top navigation with high letter-spacing -->
-    <nav class="border-b border-zinc-200 bg-white sticky top-0 z-50">
-      <div class="container mx-auto px-6 lg:px-12 py-8">
+    <nav class="bg-gallery-white sticky top-0 z-50">
+      <div class="container mx-auto px-6 lg:px-12 py-12">
         <div class="flex items-center justify-between">
           <!-- Brand name on the left -->
-          <a href={baseUrl} class="text-base font-light tracking-wide text-zinc-800 hover:text-zinc-600 transition-colors">
+          <a href={link('/')} class="text-xl font-serif font-light tracking-wide text-stone-grey hover:opacity-70 transition-opacity">
             Yufang Zhang Ceramics
           </a>
 
@@ -41,10 +71,10 @@ const baseUrl = import.meta.env.BASE_URL;
           <ul class="flex gap-12 text-sm uppercase tracking-[0.3em] font-light">
             <li>
               <a
-                href={baseUrl}
+                href={link('/')}
                 class:list={[
-                  "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath === baseUrl || currentPath === `${baseUrl}/` ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  "hover:opacity-70 transition-opacity duration-200",
+                  currentPath === baseUrl || currentPath === `${baseUrl}/` ? "text-stone-grey font-normal" : "text-clay-muted"
                 ]}
               >
                 Home
@@ -52,10 +82,10 @@ const baseUrl = import.meta.env.BASE_URL;
             </li>
             <li>
               <a
-                href={`${baseUrl}gallery`}
+                href={link('/gallery/')}
                 class:list={[
-                  "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath.includes("/gallery") ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  "hover:opacity-70 transition-opacity duration-200",
+                  currentPath.includes("/gallery") ? "text-stone-grey font-normal" : "text-clay-muted"
                 ]}
               >
                 Gallery
@@ -63,10 +93,10 @@ const baseUrl = import.meta.env.BASE_URL;
             </li>
             <li>
               <a
-                href={`${baseUrl}events`}
+                href={link('/events/')}
                 class:list={[
-                  "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath.includes("/events") ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  "hover:opacity-70 transition-opacity duration-200",
+                  currentPath.includes("/events") ? "text-stone-grey font-normal" : "text-clay-muted"
                 ]}
               >
                 Events
@@ -74,10 +104,10 @@ const baseUrl = import.meta.env.BASE_URL;
             </li>
             <li>
               <a
-                href={`${baseUrl}about`}
+                href={link('/about/')}
                 class:list={[
-                  "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath.includes("/about") ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  "hover:opacity-70 transition-opacity duration-200",
+                  currentPath.includes("/about") ? "text-stone-grey font-normal" : "text-clay-muted"
                 ]}
               >
                 About
@@ -85,10 +115,10 @@ const baseUrl = import.meta.env.BASE_URL;
             </li>
             <li>
               <a
-                href={`${baseUrl}contact`}
+                href={link('/contact/')}
                 class:list={[
-                  "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath.includes("/contact") ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  "hover:opacity-70 transition-opacity duration-200",
+                  currentPath.includes("/contact") ? "text-stone-grey font-normal" : "text-clay-muted"
                 ]}
               >
                 Contact
@@ -99,12 +129,12 @@ const baseUrl = import.meta.env.BASE_URL;
       </div>
     </nav>
 
-    <main class="container mx-auto px-6 lg:px-12 py-16">
+    <main class="container mx-auto px-6 lg:px-12 py-24">
       <slot />
     </main>
 
-    <footer class="border-t border-zinc-200 mt-32 py-12">
-      <div class="container mx-auto px-6 lg:px-12 text-center text-zinc-500 text-sm tracking-wide">
+    <footer class="mt-32 py-16">
+      <div class="container mx-auto px-6 lg:px-12 text-center text-clay-muted text-xs tracking-widest uppercase">
         <p>&copy; {new Date().getFullYear()} Yufang Zhang Ceramics. All rights reserved.</p>
       </div>
     </footer>

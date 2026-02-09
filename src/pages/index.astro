@@ -21,11 +21,8 @@ const works = await sanityClient.fetch<Work[]>(
 
 <BaseLayout title="Yufang Zhang Ceramics - Handcrafted Pottery">
   <!-- Hero Section -->
-  <section class="text-center py-12 md:py-20 max-w-4xl mx-auto">
-    <h1 class="text-5xl md:text-6xl font-light text-zinc-900 mb-8 tracking-wide">
-      Yufang Zhang
-    </h1>
-    <p class="text-lg md:text-xl text-zinc-600 leading-relaxed tracking-wide">
+  <section class="text-center py-20 md:py-32 max-w-4xl mx-auto">
+    <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
       Chiswick-based ceramicist making small-batch, wheel-thrown pottery for everyday use.
       Influenced by Chinese and Japanese traditions, my work focuses on functional, classical
       forms with hand-painted oxide decoration.
@@ -33,15 +30,15 @@ const works = await sanityClient.fetch<Work[]>(
   </section>
 
   <!-- Gallery Grid -->
-  <section class="py-12 md:py-20">
+  <section class="py-24">
     {works.length === 0 ? (
-      <div class="text-center py-20">
-        <p class="text-zinc-500 text-lg tracking-wide">
+      <div class="text-center py-32">
+        <p class="text-clay-muted text-lg tracking-wide font-light">
           No featured works yet. Add some in the Sanity Studio!
         </p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
         {works.map((work) => (
           <ProjectCard work={work} />
         ))}
