@@ -6,6 +6,7 @@ interface Props {
 
 const { title, description = "Handcrafted pottery with soul" } = Astro.props;
 const currentPath = Astro.url.pathname;
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -32,7 +33,7 @@ const currentPath = Astro.url.pathname;
       <div class="container mx-auto px-6 lg:px-12 py-8">
         <div class="flex items-center justify-between">
           <!-- Brand name on the left -->
-          <a href="/" class="text-base font-light tracking-wide text-zinc-800 hover:text-zinc-600 transition-colors">
+          <a href={baseUrl} class="text-base font-light tracking-wide text-zinc-800 hover:text-zinc-600 transition-colors">
             Yufang Zhang Ceramics
           </a>
 
@@ -40,10 +41,10 @@ const currentPath = Astro.url.pathname;
           <ul class="flex gap-12 text-sm uppercase tracking-[0.3em] font-light">
             <li>
               <a
-                href="/"
+                href={baseUrl}
                 class:list={[
                   "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath === "/" ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  currentPath === baseUrl || currentPath === `${baseUrl}/` ? "text-zinc-900 font-normal" : "text-zinc-600"
                 ]}
               >
                 Home
@@ -51,10 +52,10 @@ const currentPath = Astro.url.pathname;
             </li>
             <li>
               <a
-                href="/gallery"
+                href={`${baseUrl}gallery`}
                 class:list={[
                   "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath === "/gallery" ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  currentPath.includes("/gallery") ? "text-zinc-900 font-normal" : "text-zinc-600"
                 ]}
               >
                 Gallery
@@ -62,10 +63,10 @@ const currentPath = Astro.url.pathname;
             </li>
             <li>
               <a
-                href="/events"
+                href={`${baseUrl}events`}
                 class:list={[
                   "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath === "/events" ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  currentPath.includes("/events") ? "text-zinc-900 font-normal" : "text-zinc-600"
                 ]}
               >
                 Events
@@ -73,10 +74,10 @@ const currentPath = Astro.url.pathname;
             </li>
             <li>
               <a
-                href="/about"
+                href={`${baseUrl}about`}
                 class:list={[
                   "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath === "/about" ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  currentPath.includes("/about") ? "text-zinc-900 font-normal" : "text-zinc-600"
                 ]}
               >
                 About
@@ -84,10 +85,10 @@ const currentPath = Astro.url.pathname;
             </li>
             <li>
               <a
-                href="/contact"
+                href={`${baseUrl}contact`}
                 class:list={[
                   "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath === "/contact" ? "text-zinc-900 font-normal" : "text-zinc-600"
+                  currentPath.includes("/contact") ? "text-zinc-900 font-normal" : "text-zinc-600"
                 ]}
               >
                 Contact
