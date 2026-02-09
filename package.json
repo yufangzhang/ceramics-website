@@ -7,8 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "studio": "sanity dev",
-    "studio:deploy": "sanity deploy"
+    "studio": "node -r dotenv/config node_modules/.bin/sanity dev",
+    "studio:deploy": "node -r dotenv/config node_modules/.bin/sanity deploy"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.0",

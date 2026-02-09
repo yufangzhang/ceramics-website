@@ -3,12 +3,18 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemas'
 
+// Sanity project configuration
+// Note: Project IDs are public identifiers (not secrets) - safe to hardcode
+// For local development with .env: uses SANITY_STUDIO_* variables as fallback
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'k145g8mg'
+const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
+
 export default defineConfig({
   name: 'default',
   title: 'Pottery Website',
 
-  projectId: process.env.PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.PUBLIC_SANITY_DATASET!,
+  projectId,
+  dataset,
 
   plugins: [
     structureTool({
