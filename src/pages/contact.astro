@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact - Yufang Zhang Ceramics" description="Get in touch">
+  <div class="max-w-3xl mx-auto">
+    <!-- Page Header -->
+    <section class="text-center py-12 md:py-16 border-b border-zinc-200">
+      <h1 class="text-4xl md:text-5xl font-light text-zinc-900 tracking-wide">
+        Contact
+      </h1>
+    </section>
+
+    <div class="py-16 space-y-16">
+      <!-- Contact Form -->
+      <div>
+        <h2 class="text-2xl font-light text-zinc-900 mb-8 tracking-wide">
+          Send a Message
+        </h2>
+        <form
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+          class="space-y-6"
+          id="contact-form"
+        >
+          <div>
+            <label for="name" class="block text-sm font-light text-zinc-700 mb-2 tracking-wide">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-3 border border-zinc-300 bg-white focus:border-zinc-600 focus:outline-none transition-colors tracking-wide"
+              placeholder="Your name"
+            />
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-light text-zinc-700 mb-2 tracking-wide">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-3 border border-zinc-300 bg-white focus:border-zinc-600 focus:outline-none transition-colors tracking-wide"
+              placeholder="your@email.com"
+            />
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-light text-zinc-700 mb-2 tracking-wide">
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="6"
+              required
+              class="w-full px-4 py-3 border border-zinc-300 bg-white focus:border-zinc-600 focus:outline-none transition-colors resize-none tracking-wide"
+              placeholder="Tell me about your inquiry..."
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-zinc-900 text-white py-3 px-6 font-light tracking-widest uppercase hover:bg-zinc-700 transition-colors duration-200 focus:outline-none"
+          >
+            Send Message
+          </button>
+
+          <p id="form-status" class="text-sm text-center text-zinc-600 tracking-wide hidden"></p>
+        </form>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="border-t border-zinc-200 pt-16">
+        <h2 class="text-2xl font-light text-zinc-900 mb-8 tracking-wide">
+          Connect
+        </h2>
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-sm font-light text-zinc-500 mb-2 uppercase tracking-widest">
+              Email
+            </h3>
+            <a
+              href="mailto:yufang@example.com"
+              class="text-lg text-zinc-900 hover:text-zinc-600 transition-colors duration-200 tracking-wide"
+            >
+              yufang@example.com
+            </a>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-light text-zinc-500 mb-2 uppercase tracking-widest">
+              Location
+            </h3>
+            <p class="text-lg text-zinc-700 tracking-wide">
+              Chiswick, London
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-light text-zinc-500 mb-3 uppercase tracking-widest">
+              Follow
+            </h3>
+            <a
+              href="https://instagram.com/yufangzhangceramics"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-3 text-zinc-900 hover:text-zinc-600 transition-colors duration-200 tracking-wide"
+            >
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+              <span>Instagram</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Studio Visits Note -->
+      <div class="border-t border-zinc-200 pt-16">
+        <div class="bg-zinc-50 p-8">
+          <h3 class="text-lg font-light text-zinc-900 mb-3 tracking-wide">
+            Studio Visits
+          </h3>
+          <p class="text-zinc-700 leading-relaxed tracking-wide">
+            Interested in visiting the studio? Send me a message and we can arrange a time that works for both of us.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const status = document.getElementById('form-status')!;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    try {
+      status.classList.remove('hidden');
+      status.textContent = 'Sending...';
+      status.className = 'text-sm text-center text-zinc-600 tracking-wide';
+
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        status.textContent = 'Thank you! Your message has been sent.';
+        status.className = 'text-sm text-center text-green-600 tracking-wide';
+        form.reset();
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      status.textContent = 'Oops! There was a problem sending your message. Please try again or email directly.';
+      status.className = 'text-sm text-center text-red-600 tracking-wide';
+    }
+  });
+</script>

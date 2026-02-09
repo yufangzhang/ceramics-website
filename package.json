@@ -1,0 +1,30 @@
+{
+  "name": "pottery-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Modern pottery business website with Astro and Sanity.io",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "studio": "sanity dev",
+    "studio:deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.0",
+    "@sanity/client": "^6.12.3",
+    "@sanity/image-url": "^1.0.2",
+    "@sentry/astro": "^8.0.0",
+    "astro": "^4.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.2.0",
+    "styled-components": "^6.3.9",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "@sanity/vision": "^3.30.0",
+    "sanity": "^3.30.0",
+    "typescript": "^5.3.3"
+  }
+}

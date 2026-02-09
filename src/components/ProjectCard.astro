@@ -1,0 +1,217 @@
+---
+import type { Work } from '../lib/sanityClient';
+import { urlFor } from '../lib/sanityClient';
+
+interface Props {
+  work: Work;
+}
+
+const { work } = Astro.props;
+const mainImage = work.images[0];
+---
+
+<article
+  class="group cursor-pointer work-card"
+  data-work-id={work._id}
+  data-work-title={work.title}
+  data-work-year={work.year}
+  data-work-dimensions={work.dimensions || ''}
+  data-work-description={work.description || ''}
+  data-work-images={JSON.stringify(work.images)}
+>
+  <!-- Image -->
+  <div class="aspect-square overflow-hidden bg-zinc-100 mb-4">
+    <img
+      src={urlFor(mainImage)
+        .width(800)
+        .height(800)
+        .fit('crop')
+        .auto('format')
+        .quality(90)
+        .url()}
+      alt={work.title}
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+      loading="lazy"
+    />
+  </div>
+
+  <!-- Details -->
+  <div class="space-y-1">
+    <h3 class="text-lg font-light text-zinc-900 tracking-wide">
+      {work.title}
+    </h3>
+    <p class="text-sm text-zinc-500 tracking-wide">
+      {work.year}{work.dimensions ? ` • ${work.dimensions}` : ''}
+    </p>
+  </div>
+</article>
+
+<!-- Lightbox Modal (shared by all cards) -->
+<div id="lightbox" class="fixed inset-0 bg-black/95 z-[100] hidden items-center justify-center">
+  <button
+    id="lightbox-close"
+    class="absolute top-8 right-8 text-white hover:text-zinc-400 transition-colors z-10 text-4xl font-light leading-none"
+    aria-label="Close lightbox"
+  >
+    &times;
+  </button>
+
+  <button
+    id="lightbox-prev"
+    class="absolute left-8 top-1/2 -translate-y-1/2 text-white hover:text-zinc-400 transition-colors z-10 text-5xl font-light leading-none"
+    aria-label="Previous image"
+  >
+    ‹
+  </button>
+
+  <button
+    id="lightbox-next"
+    class="absolute right-8 top-1/2 -translate-y-1/2 text-white hover:text-zinc-400 transition-colors z-10 text-5xl font-light leading-none"
+    aria-label="Next image"
+  >
+    ›
+  </button>
+
+  <div class="max-w-7xl w-full px-20 flex items-center gap-12">
+    <!-- Image -->
+    <div class="flex-1 flex items-center justify-center">
+      <img
+        id="lightbox-image"
+        src=""
+        alt=""
+        class="max-h-[85vh] max-w-full object-contain"
+      />
+    </div>
+
+    <!-- Info Panel -->
+    <div class="w-80 text-white space-y-4">
+      <h2 id="lightbox-title" class="text-3xl font-light tracking-wide"></h2>
+      <p id="lightbox-year-dimensions" class="text-zinc-400 tracking-wide"></p>
+      <p id="lightbox-description" class="text-zinc-300 leading-relaxed"></p>
+      <div id="lightbox-thumbnails" class="flex gap-2 flex-wrap mt-6"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Lightbox functionality
+  let currentImages: any[] = [];
+  let currentIndex = 0;
+  let currentWorkData: any = {};
+
+  const lightbox = document.getElementById('lightbox')!;
+  const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+  const lightboxTitle = document.getElementById('lightbox-title')!;
+  const lightboxYearDimensions = document.getElementById('lightbox-year-dimensions')!;
+  const lightboxDescription = document.getElementById('lightbox-description')!;
+  const lightboxThumbnails = document.getElementById('lightbox-thumbnails')!;
+  const closeBtn = document.getElementById('lightbox-close')!;
+  const prevBtn = document.getElementById('lightbox-prev')!;
+  const nextBtn = document.getElementById('lightbox-next')!;
+
+  function showImage(index: number) {
+    currentIndex = index;
+    const image = currentImages[index];
+
+    // Update main image using Sanity image URL builder
+    const imageUrl = `https://cdn.sanity.io/images/${import.meta.env.PUBLIC_SANITY_PROJECT_ID}/${import.meta.env.PUBLIC_SANITY_DATASET}/${image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}?w=1600&h=1600&fit=max&auto=format&q=90`;
+    lightboxImage.src = imageUrl;
+    lightboxImage.alt = currentWorkData.title;
+
+    // Update thumbnails active state
+    const thumbnails = lightboxThumbnails.querySelectorAll('button');
+    thumbnails.forEach((thumb, i) => {
+      if (i === index) {
+        thumb.classList.add('ring-2', 'ring-white');
+        thumb.classList.remove('opacity-50');
+      } else {
+        thumb.classList.remove('ring-2', 'ring-white');
+        thumb.classList.add('opacity-50');
+      }
+    });
+
+    // Show/hide navigation buttons
+    prevBtn.style.display = currentImages.length > 1 ? 'block' : 'none';
+    nextBtn.style.display = currentImages.length > 1 ? 'block' : 'none';
+  }
+
+  function openLightbox(workData: any) {
+    currentWorkData = workData;
+    currentImages = JSON.parse(workData.images);
+    currentIndex = 0;
+
+    // Update info
+    lightboxTitle.textContent = workData.title;
+    lightboxYearDimensions.textContent = `${workData.year}${workData.dimensions ? ' • ' + workData.dimensions : ''}`;
+    lightboxDescription.textContent = workData.description || '';
+
+    // Create thumbnails
+    lightboxThumbnails.innerHTML = '';
+    currentImages.forEach((img, index) => {
+      const thumbUrl = `https://cdn.sanity.io/images/${import.meta.env.PUBLIC_SANITY_PROJECT_ID}/${import.meta.env.PUBLIC_SANITY_DATASET}/${img.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}?w=100&h=100&fit=crop&auto=format`;
+      const button = document.createElement('button');
+      button.className = 'w-16 h-16 overflow-hidden transition-all duration-200';
+      button.innerHTML = `<img src="${thumbUrl}" alt="Thumbnail ${index + 1}" class="w-full h-full object-cover" />`;
+      button.onclick = () => showImage(index);
+      lightboxThumbnails.appendChild(button);
+    });
+
+    showImage(0);
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  // Event listeners
+  document.querySelectorAll('.work-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const workData = {
+        id: card.getAttribute('data-work-id'),
+        title: card.getAttribute('data-work-title'),
+        year: card.getAttribute('data-work-year'),
+        dimensions: card.getAttribute('data-work-dimensions'),
+        description: card.getAttribute('data-work-description'),
+        images: card.getAttribute('data-work-images'),
+      };
+      openLightbox(workData);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showImage((currentIndex - 1 + currentImages.length) % currentImages.length);
+  });
+
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showImage((currentIndex + 1) % currentImages.length);
+  });
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+      closeLightbox();
+    }
+    if (e.key === 'ArrowLeft' && !lightbox.classList.contains('hidden')) {
+      showImage((currentIndex - 1 + currentImages.length) % currentImages.length);
+    }
+    if (e.key === 'ArrowRight' && !lightbox.classList.contains('hidden')) {
+      showImage((currentIndex + 1) % currentImages.length);
+    }
+  });
+
+  // Close on background click
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+</script>
