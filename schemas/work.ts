@@ -39,10 +39,10 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Vessels', value: 'vessels'},
-          {title: 'Bowls', value: 'bowls'},
-          {title: 'Plates', value: 'plates'},
+          {title: 'Vase', value: 'vase'},
+          {title: 'Table-ware', value: 'tableware'},
           {title: 'Cups & Mugs', value: 'cups'},
+          {title: 'Tea-ware', value: 'teaware'},
           {title: 'Other', value: 'other'},
         ],
         layout: 'dropdown',
@@ -83,6 +83,13 @@ export default defineType({
       type: 'boolean',
       description: 'Display this work on the homepage',
       initialValue: false,
+    }),
+    defineField({
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Order for displaying on homepage (lower numbers appear first)',
+      initialValue: 999,
     }),
   ],
   preview: {

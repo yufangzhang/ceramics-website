@@ -30,7 +30,13 @@ const currentPath = Astro.url.pathname;
     <!-- Top navigation with high letter-spacing -->
     <nav class="border-b border-zinc-200 bg-white sticky top-0 z-50">
       <div class="container mx-auto px-6 lg:px-12 py-8">
-        <div class="flex items-center justify-center">
+        <div class="flex items-center justify-between">
+          <!-- Brand name on the left -->
+          <a href="/" class="text-base font-light tracking-wide text-zinc-800 hover:text-zinc-600 transition-colors">
+            Yufang Zhang Ceramics
+          </a>
+
+          <!-- Navigation links -->
           <ul class="flex gap-12 text-sm uppercase tracking-[0.3em] font-light">
             <li>
               <a
@@ -40,7 +46,18 @@ const currentPath = Astro.url.pathname;
                   currentPath === "/" ? "text-zinc-900 font-normal" : "text-zinc-600"
                 ]}
               >
-                Work
+                Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="/gallery"
+                class:list={[
+                  "hover:text-zinc-500 transition-colors duration-200",
+                  currentPath === "/gallery" ? "text-zinc-900 font-normal" : "text-zinc-600"
+                ]}
+              >
+                Gallery
               </a>
             </li>
             <li>
@@ -63,17 +80,6 @@ const currentPath = Astro.url.pathname;
                 ]}
               >
                 About
-              </a>
-            </li>
-            <li>
-              <a
-                href="/stockists"
-                class:list={[
-                  "hover:text-zinc-500 transition-colors duration-200",
-                  currentPath === "/stockists" ? "text-zinc-900 font-normal" : "text-zinc-600"
-                ]}
-              >
-                Stockists
               </a>
             </li>
             <li>

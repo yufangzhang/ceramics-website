@@ -24,7 +24,7 @@ export interface Work {
   };
   year: number;
   dimensions?: string;
-  category: 'vessels' | 'bowls' | 'plates' | 'cups' | 'other';
+  category: 'vase' | 'tableware' | 'cups' | 'teaware' | 'other';
   images: Array<{
     asset: {
       _ref: string;
@@ -37,6 +37,7 @@ export interface Work {
   }>;
   description?: string;
   featured: boolean;
+  order?: number;
 }
 
 export interface Event {
