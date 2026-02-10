@@ -95,7 +95,7 @@ function formatDateRange(startDate: string, endDate?: string): string {
           &times;
         </button>
 
-        <h2 class="text-2xl font-serif font-light text-ink mb-3 tracking-wide italic">
+        <h2 class="text-2xl font-sans font-medium uppercase tracking-[0.25em] text-zinc-900 mb-3">
           Stay Updated
         </h2>
         <p class="text-clay-muted mb-6 tracking-wide font-light text-sm leading-relaxed">
@@ -139,13 +139,13 @@ function formatDateRange(startDate: string, endDate?: string): string {
       <!-- Upcoming Events -->
       {upcomingEvents.length > 0 && (
         <section class="mb-32">
-          <h2 class="text-3xl font-serif font-light text-ink mb-12 tracking-wide italic">
+          <h2 style="font-size: 22px;" class="font-sans font-medium uppercase tracking-[0.25em] text-zinc-900 mb-12">
             Upcoming
           </h2>
           <div class="space-y-12">
             {upcomingEvents.map((event) => (
               <article class="pb-12 last:pb-0">
-                <h3 class="text-2xl font-serif font-light text-ink mb-4 tracking-wide italic">
+                <h3 class="text-2xl font-sans font-medium uppercase tracking-[0.25em] text-zinc-900 mb-4">
                   {event.title}
                 </h3>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-clay-muted mb-5 tracking-wide metadata">
@@ -191,13 +191,13 @@ function formatDateRange(startDate: string, endDate?: string): string {
       <!-- Past Events -->
       {pastEvents.length > 0 && (
         <section>
-          <h2 class="text-3xl font-serif font-light text-ink mb-12 tracking-wide italic">
+          <h2 style="font-size: 22px;" class="font-sans font-medium uppercase tracking-[0.25em] text-zinc-900 mb-12">
             Past Events
           </h2>
           <div class="space-y-10 opacity-60">
             {pastEvents.map((event) => (
               <article class="pb-10 last:pb-0">
-                <h3 class="text-xl font-serif font-light text-ink mb-3 tracking-wide italic">
+                <h3 class="text-xl font-sans font-medium uppercase tracking-[0.25em] text-zinc-900 mb-3">
                   {event.title}
                 </h3>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-clay-muted text-sm tracking-wide metadata">

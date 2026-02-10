@@ -76,19 +76,19 @@ const profile = await sanityClient.fetch<Profile>(
   </head>
   <body class="min-h-screen bg-warm-white text-stone-grey font-sans antialiased">
     <!-- Horizontal minimalist navigation -->
-    <nav class="w-full py-8 px-8 bg-warm-white sticky top-0 z-50 border-b border-zinc-100">
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <nav class="w-full py-8 px-8 bg-warm-white sticky top-0 z-50 border-b border-zinc-100 overflow-visible">
+      <div class="max-w-7xl mx-auto flex items-center justify-between overflow-visible">
         <!-- Brand name/logo on left -->
-        <a href={link('/')} class="group">
-          <div class="flex items-start gap-3">
-            <h1 class="text-[300px] md:text-[360px] font-medium uppercase tracking-[0.25em] text-zinc-900 font-sans leading-tight transition-colors group-hover:opacity-70">
+        <a href={link('/')} class="group overflow-visible">
+          <div class="flex items-start gap-2 overflow-visible">
+            <h1 style="font-size: 28px;" class="font-medium uppercase tracking-[0.25em] text-zinc-900 font-sans leading-tight transition-colors group-hover:opacity-70">
               Yufang Zhang
             </h1>
             {profile?.logo?.asset && (
               <img
                 src={urlFor(profile.logo).width(200).format('webp').quality(90).url()}
                 alt="Logo"
-                class="h-9 w-auto opacity-90"
+                class="h-12 w-auto opacity-90 -mt-2"
               />
             )}
           </div>
