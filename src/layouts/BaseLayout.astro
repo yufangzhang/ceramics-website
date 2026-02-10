@@ -51,8 +51,8 @@ const faviconUrl = profile?.favicon?.asset
       html {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        background-color: #FAF9F6; /* Set the global paper color */
-        color: #1A1A1A; /* Set the ink color */
+        background-color: #F5F2ED; /* Set the global gallery bone color */
+        color: #27272A; /* Set the ink-dark color */
       }
 
       /* Typography */
@@ -81,9 +81,9 @@ const faviconUrl = profile?.favicon?.asset
       }
     </style>
   </head>
-  <body class="min-h-screen bg-warm-white text-stone-grey font-sans antialiased">
+  <body class="min-h-screen bg-gallery-bone text-ink-dark font-sans antialiased">
     <!-- Horizontal minimalist navigation -->
-    <nav class="w-full py-8 px-8 bg-warm-white sticky top-0 z-50 border-b border-zinc-100 overflow-visible">
+    <nav class="w-full py-8 px-8 bg-gallery-bone sticky top-0 z-50 border-b border-zinc-100 overflow-visible">
       <div class="max-w-7xl mx-auto flex items-center justify-between overflow-visible">
         <!-- Brand name/logo on left -->
         <a href={link('/')} class="group overflow-visible">
@@ -169,7 +169,7 @@ const faviconUrl = profile?.favicon?.asset
     <!-- Mobile menu overlay -->
     <div
       id="mobile-menu"
-      class="fixed inset-0 bg-warm-white z-40 hidden md:hidden"
+      class="fixed inset-0 bg-gallery-bone z-40 hidden md:hidden"
     >
       <div class="flex flex-col items-center justify-center h-full space-y-8">
         <a

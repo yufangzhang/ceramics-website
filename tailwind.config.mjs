@@ -16,7 +16,9 @@ export default {
         'warm-white': '#FAF9F6', // The "Paper" background
         'bg-gallery': '#FAF9F6', // Same as warm-white, for clarity
         'gallery-white': '#FAF9F6',
+        'gallery-bone': '#F5F2ED', // Warm bone for sophisticated aesthetic
         'ink': '#1A1A1A', // Charcoal instead of pure black
+        'ink-dark': '#27272A', // Deeper charcoal for forms and text
         'stone-grey': '#1A1A1A', // Using ink color
         'clay-muted': '#71717A', // Updated muted color
         clay: {

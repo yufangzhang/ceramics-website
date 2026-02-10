@@ -12,79 +12,172 @@ const profile = await sanityClient.fetch<Profile>(
 );
 ---
 
-<BaseLayout title="Contact - Yufang Zhang Ceramics" description="Get in touch">
-  <div class="max-w-3xl mx-auto">
-    {profile ? (
-      <div class="py-12">
-        <!-- Commission Note at top -->
-        <div class="mb-16">
-          <h3 class="metadata text-clay-muted mb-4">
-            Acquisitions & Commissions
-          </h3>
-          <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
-            Many pieces shown in Selected Works are available for purchase. I also welcome commissions for custom sets or unique sculptural forms. Please get in touch to discuss current availability or upcoming studio releases.
+<BaseLayout title="Contact - Yufang Zhang Ceramics" description="Commission inquiries and sales">
+  <main class="min-h-screen bg-gallery-bone text-ink-dark px-8 py-24">
+    <div class="max-w-2xl mx-auto text-center">
+
+      <!-- Header -->
+      <header class="mb-20">
+        <h1 class="text-[11px] uppercase tracking-museum text-zinc-500 mb-8">
+          Acquisitions & Inquiries
+        </h1>
+        <div class="max-w-lg mx-auto">
+          <p class="text-sm font-light text-zinc-600 leading-relaxed">
+            For inquiries regarding pieces shown in Selected Works, please include the name of the work in your message. To stay updated on new releases or to inquire about available work, please use the form below or send a DM on Instagram.
           </p>
         </div>
+      </header>
 
-        <!-- Contact Information -->
-        <div class="space-y-16">
-          {profile.email && (
-            <div>
-              <h3 class="metadata text-clay-muted mb-4">
-                Email
-              </h3>
-              <a
-                href={`mailto:${profile.email}`}
-                class="inline-flex items-center gap-3 text-base md:text-lg text-ink hover:opacity-70 transition-opacity duration-200 tracking-wide font-light"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                <span>{profile.email}</span>
-              </a>
-            </div>
-          )}
-
-          {profile.instagramHandle && (
-            <div>
-              <h3 class="metadata text-clay-muted mb-4">
-                Instagram
-              </h3>
-              <a
-                href={`https://instagram.com/${profile.instagramHandle}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-3 text-base md:text-lg text-ink hover:opacity-70 transition-opacity duration-200 tracking-wide font-light"
-              >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-                <span>@{profile.instagramHandle}</span>
-              </a>
-            </div>
-          )}
-
-          {profile.location && (
-            <div>
-              <h3 class="metadata text-clay-muted mb-4">
-                Location
-              </h3>
-              <p class="text-base md:text-lg text-ink tracking-wide font-light">
-                {profile.location}
-              </p>
-            </div>
-          )}
+      <!-- Contact Form -->
+      <form
+        action={profile?.email ? `https://formspree.io/f/YOUR_FORMSPREE_ID` : '#'}
+        method="POST"
+        class="space-y-12 text-left"
+      >
+        <!-- Name Field -->
+        <div class="relative">
+          <label for="name" class="text-[9px] uppercase tracking-widest text-zinc-400 mb-1 block">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-zinc-800 transition-colors font-light"
+            placeholder="Your name"
+            required
+          />
         </div>
+
+        <!-- Email Field -->
+        <div class="relative">
+          <label for="email" class="text-[9px] uppercase tracking-widest text-zinc-400 mb-1 block">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-zinc-800 transition-colors font-light"
+            placeholder="Email address"
+            required
+          />
+        </div>
+
+        <!-- Inquiry Type -->
+        <div class="relative">
+          <label for="inquiry-type" class="text-[9px] uppercase tracking-widest text-zinc-400 mb-1 block">
+            Inquiry Type
+          </label>
+          <select
+            id="inquiry-type"
+            name="inquiry-type"
+            class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-zinc-800 transition-colors font-light appearance-none cursor-pointer"
+            required
+          >
+            <option value="">Select...</option>
+            <option value="commission">Bespoke Commission</option>
+            <option value="purchase">Available Work in Gallery</option>
+            <option value="general">General Inquiry</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <!-- Message Field -->
+        <div class="relative">
+          <label for="message" class="text-[9px] uppercase tracking-widest text-zinc-400 mb-1 block">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-zinc-800 transition-colors font-light resize-none"
+            placeholder="How can I help you?"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center pt-10">
+          <button
+            type="submit"
+            class="bg-ink-dark text-gallery-bone px-14 py-4 text-[10px] uppercase tracking-editorial hover:bg-zinc-700 transition-all duration-300 shadow-sm"
+          >
+            Send Message
+          </button>
+        </div>
+      </form>
+
+      <!-- Social Footer -->
+      <div class="mt-24 pt-12 border-t border-zinc-200/60">
+        {profile?.instagramHandle ? (
+          <a
+            href={`https://instagram.com/${profile.instagramHandle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex flex-col items-center"
+          >
+            <span class="text-[9px] uppercase tracking-editorial text-zinc-400 mb-2">
+              Social
+            </span>
+            <span class="text-sm font-medium tracking-wide group-hover:text-zinc-500 transition-colors underline underline-offset-8 decoration-zinc-200">
+              @{profile.instagramHandle}
+            </span>
+          </a>
+        ) : (
+          <div class="text-[9px] uppercase tracking-editorial text-zinc-400">
+            Follow the Studio
+          </div>
+        )}
       </div>
-    ) : (
-      <div class="text-center py-20">
-        <p class="text-clay-muted text-lg mb-4 tracking-wide">
-          Contact information not yet configured.
-        </p>
-        <p class="text-clay-muted/70 tracking-wide">
-          Add your contact details in the Sanity Studio!
-        </p>
-      </div>
-    )}
-  </div>
+
+      <!-- Alternative: Direct Email Link -->
+      {profile?.email && (
+        <div class="mt-8">
+          <p class="text-[9px] uppercase tracking-widest text-zinc-400 mb-2">
+            Or Email Directly
+          </p>
+          <a
+            href={`mailto:${profile.email}`}
+            class="text-sm text-zinc-600 hover:text-zinc-900 transition-colors font-light"
+          >
+            {profile.email}
+          </a>
+        </div>
+      )}
+    </div>
+  </main>
 </BaseLayout>
+
+<style>
+  /* Ensure form inputs and textareas have consistent styling */
+  input::placeholder,
+  textarea::placeholder {
+    color: #a1a1aa;
+    opacity: 0.5;
+  }
+
+  select {
+    cursor: pointer;
+    color: #27272A;
+  }
+
+  /* Style for default select option */
+  select option[value=""] {
+    color: #a1a1aa;
+  }
+
+  select option {
+    background: #F5F2ED;
+    color: #27272A;
+  }
+
+  /* Remove default select arrow styling */
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2327272A' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    padding-right: 2rem;
+  }
+</style>
