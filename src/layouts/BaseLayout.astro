@@ -52,7 +52,7 @@ const faviconUrl = profile?.favicon?.asset
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         background-color: #F5F2ED; /* Set the global gallery bone color */
-        color: #27272A; /* Set the ink-dark color */
+        color: #27272a; /* zinc-800 */
       }
 
       /* Typography */
@@ -79,18 +79,32 @@ const faviconUrl = profile?.favicon?.asset
         opacity: 1;
         transition: opacity 0.6s ease-in-out;
       }
+
+      /* Unified Button Component */
+      .btn-zen {
+        background-color: #27272a; /* zinc-800 */
+        color: #F5F2ED;
+        border: 1px solid #27272a;
+        padding: 0.875rem 3rem;
+        font-size: 0.625rem;
+        text-transform: uppercase;
+        letter-spacing: 0.4em;
+        transition: all 500ms ease-in-out;
+      }
+
+      .btn-zen:hover {
+        background-color: transparent;
+        color: #27272a; /* zinc-800 */
+      }
     </style>
   </head>
-  <body class="min-h-screen bg-gallery-bone text-ink-dark font-sans antialiased">
+  <body class="min-h-screen bg-[#F5F2ED] text-zinc-800 font-sans antialiased">
     <!-- Horizontal minimalist navigation -->
-    <nav class="w-full py-8 px-8 bg-gallery-bone sticky top-0 z-50 overflow-visible backdrop-blur-sm bg-opacity-100">
-      <div class="max-w-7xl mx-auto flex items-center justify-between overflow-visible">
+    <nav class="w-full py-8 px-8 bg-[#F5F2ED] sticky top-0 z-50 backdrop-blur-sm bg-opacity-100">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
         <!-- Brand name/logo on left -->
-        <a href={link('/')} class="group overflow-visible">
-          <div class="flex items-start gap-2 overflow-visible">
-            <h1 style="font-size: 27.5px;" class="font-medium uppercase tracking-gallery text-zinc-900 font-sans leading-tight transition-colors group-hover:opacity-70">
-              Yufang Zhang
-            </h1>
+        <a href={link('/')} class="group flex-shrink-0">
+          <div class="flex items-start gap-[1.1rem]">
             {profile?.logo?.asset && (
               <img
                 src={urlFor(profile.logo).width(200).format('webp').quality(90).url()}
@@ -98,16 +112,21 @@ const faviconUrl = profile?.favicon?.asset
                 class="h-12 w-auto opacity-40 -mt-2"
               />
             )}
+            <div>
+              <h1 style="font-size: 27.5px;" class="font-medium uppercase tracking-gallery text-zinc-900 font-sans leading-tight transition-colors group-hover:opacity-70">
+                Yufang Zhang
+              </h1>
+              <p class="text-[10px] uppercase tracking-museum text-zinc-400 mt-4">
+                Ceramic Artist
+              </p>
+            </div>
           </div>
-          <p class="text-[10px] uppercase tracking-museum text-zinc-400 mt-4">
-            Ceramic Artist
-          </p>
         </a>
 
         <!-- Mobile menu button -->
         <button
           id="mobile-menu-button"
-          class="md:hidden text-ink p-2"
+          class="md:hidden text-ink p-2 flex-shrink-0"
           aria-label="Toggle menu"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +135,7 @@ const faviconUrl = profile?.favicon?.asset
         </button>
 
         <!-- Navigation links on right - hidden on mobile -->
-        <div class="hidden md:flex items-center gap-x-8">
+        <div class="hidden md:flex items-center gap-x-8 flex-shrink-0">
           <a
             href={link('/')}
             class:list={[
