@@ -30,9 +30,18 @@ export default defineConfig({
                   .documentId('profile')
               ),
             S.divider(),
-            ...S.documentTypeListItems().filter(
-              (listItem) => !['profile'].includes(listItem.getId() || '')
-            ),
+            S.listItem()
+              .title('Home Showcase')
+              .schemaType('homeShowcase')
+              .child(S.documentTypeList('homeShowcase').title('Home Showcase')),
+            S.listItem()
+              .title('Selected Works')
+              .schemaType('work')
+              .child(S.documentTypeList('work').title('Selected Works')),
+            S.listItem()
+              .title('Events')
+              .schemaType('event')
+              .child(S.documentTypeList('event').title('Events')),
           ]),
     }),
     visionTool(),

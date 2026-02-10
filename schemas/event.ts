@@ -13,9 +13,15 @@ export default defineType({
     }),
     defineField({
       name: 'date',
-      title: 'Date',
+      title: 'Start Date',
       type: 'datetime',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'endDate',
+      title: 'End Date',
+      type: 'datetime',
+      description: 'Optional end date for multi-day events',
     }),
     defineField({
       name: 'location',
@@ -34,6 +40,13 @@ export default defineType({
       title: 'Link',
       type: 'url',
       description: 'Optional link for registration or more information',
+    }),
+    defineField({
+      name: 'isPast',
+      title: 'Mark as Past Event',
+      type: 'boolean',
+      description: 'Manually mark this event as past (overrides automatic date checking)',
+      initialValue: false,
     }),
   ],
   preview: {

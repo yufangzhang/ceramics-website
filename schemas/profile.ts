@@ -61,6 +61,13 @@ export default defineType({
       description: 'Your location/city',
       placeholder: 'Chiswick, London',
     }),
+    defineField({
+      name: 'buttondownUsername',
+      title: 'Buttondown Username',
+      type: 'string',
+      description: 'Your Buttondown username for newsletter subscriptions (without @)',
+      placeholder: 'yufangceramics',
+    }),
   ],
   preview: {
     prepare() {

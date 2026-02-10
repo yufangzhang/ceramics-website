@@ -70,18 +70,40 @@ export interface Work {
     caption?: string;
   }>;
   description?: string;
-  featured: boolean;
+  materials?: string;
+  dishwasherSafe?: boolean;
+  sold?: boolean;
   order?: number;
-  homeOrder?: number;
+}
+
+export interface HomeShowcase {
+  _id: string;
+  title: string;
+  year: number;
+  dimensions?: string;
+  images: Array<{
+    asset: {
+      _ref: string;
+    };
+    hotspot?: {
+      x: number;
+      y: number;
+    };
+    caption?: string;
+  }>;
+  description?: string;
+  order: number;
 }
 
 export interface Event {
   _id: string;
   title: string;
   date: string;
+  endDate?: string;
   location: string;
   description?: string;
   link?: string;
+  isPast?: boolean;
 }
 
 export interface Profile {
@@ -105,6 +127,7 @@ export interface Profile {
   instagramHandle?: string;
   email: string;
   location?: string;
+  buttondownUsername?: string;
 }
 
 export interface Stockist {

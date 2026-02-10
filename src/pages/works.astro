@@ -4,7 +4,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import { sanityClient, type Work } from '../lib/sanityClient';
 
 const works = await sanityClient.fetch<Work[]>(
-  `*[_type == "work"] | order(order asc, year desc) {
+  `*[_type == "work"] | order(order asc, _createdAt desc) {
     _id,
     title,
     slug,
@@ -13,14 +13,15 @@ const works = await sanityClient.fetch<Work[]>(
     category,
     images,
     description,
-    featured,
-    order,
-    homeOrder
+    materials,
+    dishwasherSafe,
+    sold,
+    order
   }`
 );
 ---
 
-<BaseLayout title="Gallery - Yufang Zhang Ceramics" description="Explore my pottery collection">
+<BaseLayout title="Selected Works - Yufang Zhang Ceramics" description="Explore my pottery collection">
   <!-- Brief intro -->
   <section class="text-center py-12 max-w-4xl mx-auto">
     <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
@@ -28,7 +29,7 @@ const works = await sanityClient.fetch<Work[]>(
     </p>
   </section>
 
-  <!-- Gallery Grid -->
+  <!-- Selected Works Grid -->
   <section class="py-20">
     {works.length === 0 ? (
       <div class="text-center py-32">

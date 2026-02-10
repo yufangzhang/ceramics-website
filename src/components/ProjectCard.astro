@@ -17,10 +17,18 @@ const mainImage = work.images[0];
   data-work-year={work.year}
   data-work-dimensions={work.dimensions || ''}
   data-work-description={work.description || ''}
+  data-work-materials={work.materials || ''}
+  data-work-dishwasher-safe={work.dishwasherSafe ? 'true' : 'false'}
+  data-work-sold={work.sold ? 'true' : 'false'}
   data-work-images={JSON.stringify(work.images)}
 >
   <!-- Image with flexible aspect ratio -->
-  <div class="mb-6 overflow-hidden bg-zinc-50">
+  <div class="mb-6 overflow-hidden bg-gallery-white relative">
+    {work.sold && (
+      <div class="absolute top-3 right-3 bg-ink/90 text-warm-white px-3 py-1 text-xs uppercase tracking-widest z-10">
+        Sold
+      </div>
+    )}
     <img
       src={urlFor(mainImage)
         .width(1200)
@@ -35,7 +43,7 @@ const mainImage = work.images[0];
 
   <!-- Details -->
   <div class="space-y-2">
-    <h3 class="text-2xl font-serif font-light text-stone-grey italic">
+    <h3 class="text-2xl font-serif font-light text-ink italic">
       {work.title}
     </h3>
     <p class="metadata text-clay-muted">
@@ -86,6 +94,7 @@ const mainImage = work.images[0];
       <h2 id="lightbox-title" class="text-3xl font-light tracking-wide"></h2>
       <p id="lightbox-year-dimensions" class="text-zinc-400 tracking-wide"></p>
       <p id="lightbox-description" class="text-zinc-300 leading-relaxed"></p>
+      <div id="lightbox-details" class="space-y-2 text-sm text-zinc-400"></div>
       <div id="lightbox-thumbnails" class="flex gap-2 flex-wrap mt-6"></div>
     </div>
   </div>
@@ -102,6 +111,7 @@ const mainImage = work.images[0];
   const lightboxTitle = document.getElementById('lightbox-title')!;
   const lightboxYearDimensions = document.getElementById('lightbox-year-dimensions')!;
   const lightboxDescription = document.getElementById('lightbox-description')!;
+  const lightboxDetails = document.getElementById('lightbox-details')!;
   const lightboxThumbnails = document.getElementById('lightbox-thumbnails')!;
   const closeBtn = document.getElementById('lightbox-close')!;
   const prevBtn = document.getElementById('lightbox-prev')!;
@@ -142,6 +152,23 @@ const mainImage = work.images[0];
     lightboxTitle.textContent = workData.title;
     lightboxYearDimensions.textContent = `${workData.year}${workData.dimensions ? ' • ' + workData.dimensions : ''}`;
     lightboxDescription.textContent = workData.description || '';
+
+    // Update details section
+    const details = [];
+    if (workData.materials) {
+      details.push(`<div><span class="text-zinc-500">Materials:</span> ${workData.materials}</div>`);
+    }
+    if (workData.dishwasherSafe === 'true') {
+      details.push(`<div><span class="text-zinc-500">Dishwasher Safe:</span> Yes</div>`);
+    } else if (workData.dishwasherSafe === 'false') {
+      details.push(`<div><span class="text-zinc-500">Dishwasher Safe:</span> No</div>`);
+    }
+    if (workData.sold === 'true') {
+      details.push(`<div class="text-amber-400"><span class="text-zinc-500">Status:</span> Sold</div>`);
+    } else {
+      details.push(`<div class="text-green-400"><span class="text-zinc-500">Status:</span> Available</div>`);
+    }
+    lightboxDetails.innerHTML = details.join('');
 
     // Create thumbnails
     lightboxThumbnails.innerHTML = '';

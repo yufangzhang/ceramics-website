@@ -78,25 +78,32 @@ export default defineType({
       rows: 4,
     }),
     defineField({
-      name: 'featured',
-      title: 'Featured',
+      name: 'materials',
+      title: 'Materials',
+      type: 'string',
+      description: 'e.g., "Porcelain" or "Stoneware" or "Porcelain with oxide decoration"',
+    }),
+    defineField({
+      name: 'dishwasherSafe',
+      title: 'Dishwasher Safe',
       type: 'boolean',
-      description: 'Display this work on the homepage',
+      description: 'Is this piece dishwasher safe?',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'sold',
+      title: 'Sold',
+      type: 'boolean',
+      description: 'Mark as sold',
       initialValue: false,
     }),
     defineField({
       name: 'order',
-      title: 'Gallery Display Order',
+      title: 'Display Order',
       type: 'number',
-      description: 'Order for displaying in the Gallery page (lower numbers appear first)',
+      description: 'Order for displaying in Selected Works page (lower numbers appear first). Leave as 999 for newest-first default ordering.',
       initialValue: 999,
-    }),
-    defineField({
-      name: 'homeOrder',
-      title: 'Home Page Display Order',
-      type: 'number',
-      description: 'Order for displaying on the Home page (lower numbers appear first). Only applies to featured works.',
-      initialValue: 999,
+      validation: (Rule) => Rule.min(0),
     }),
   ],
   preview: {
@@ -105,15 +112,34 @@ export default defineType({
       year: 'year',
       category: 'category',
       images: 'images',
-      featured: 'featured',
+      sold: 'sold',
+      order: 'order',
     },
     prepare(selection) {
-      const {title, year, category, images, featured} = selection
+      const {title, year, category, images, sold, order} = selection
+      const orderPrefix = order !== 999 ? `[${order}] ` : ''
       return {
         title: title,
-        subtitle: `${year} • ${category}${featured ? ' • ⭐ Featured' : ''}`,
+        subtitle: `${orderPrefix}${year} • ${category}${sold ? ' • SOLD' : ''}`,
         media: images?.[0],
       }
     },
   },
+  orderings: [
+    {
+      title: 'Display Order',
+      name: 'orderAsc',
+      by: [{field: 'order', direction: 'asc'}],
+    },
+    {
+      title: 'Year, Newest',
+      name: 'yearDesc',
+      by: [{field: 'year', direction: 'desc'}],
+    },
+    {
+      title: 'Year, Oldest',
+      name: 'yearAsc',
+      by: [{field: 'year', direction: 'asc'}],
+    },
+  ],
 })

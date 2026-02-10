@@ -1,21 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { sanityClient, type Event } from '../lib/sanityClient';
+import { sanityClient, type Event, type Profile } from '../lib/sanityClient';
 
 const events = await sanityClient.fetch<Event[]>(
-  `*[_type == "event"] | order(date desc) {
+  `*[_type == "event"] | order(date asc) {
     _id,
     title,
     date,
+    endDate,
     location,
     description,
-    link
+    link,
+    isPast
   }`
 );
 
+// Fetch profile for Buttondown username
+const profile = await sanityClient.fetch<Profile>(
+  "*[_type == 'profile' && _id == 'profile'][0] { buttondownUsername }"
+);
+
+const buttondownUsername = profile?.buttondownUsername || 'YOUR_USERNAME_HERE';
+
 const now = new Date();
-const upcomingEvents = events.filter(event => new Date(event.date) >= now);
-const pastEvents = events.filter(event => new Date(event.date) < now);
+const upcomingEvents = events.filter(event => {
+  const isPastManually = event.isPast === true;
+  const isPastByDate = new Date(event.endDate || event.date) < now;
+  return !isPastManually && !isPastByDate;
+});
+const pastEvents = events.filter(event => {
+  const isPastManually = event.isPast === true;
+  const isPastByDate = new Date(event.endDate || event.date) < now;
+  return isPastManually || isPastByDate;
+}).reverse();
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -28,21 +45,107 @@ function formatDate(dateString: string): string {
     minute: '2-digit'
   });
 }
+
+function formatDateRange(startDate: string, endDate?: string): string {
+  if (!endDate) {
+    return formatDate(startDate);
+  }
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  // Same day event
+  if (start.toDateString() === end.toDateString()) {
+    return formatDate(startDate);
+  }
+
+  // Multi-day event
+  const startFormatted = start.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+  });
+  const endFormatted = end.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+
+  return `${startFormatted} - ${endFormatted}`;
+}
 ---
 
 <BaseLayout title="Events - Yufang Zhang Ceramics" description="Upcoming pottery workshops, exhibitions, and events">
   <div class="max-w-4xl mx-auto">
+    <!-- Floating Subscribe Button -->
+    <button
+      id="subscribe-button"
+      class="fixed bottom-8 right-8 bg-ink text-warm-white px-5 py-3 shadow-lg hover:opacity-90 transition-all duration-300 z-50 uppercase tracking-widest text-xs"
+      aria-label="Subscribe to updates"
+    >
+      Subscribe
+    </button>
+
+    <!-- Subscribe Modal -->
+    <div id="subscribe-modal" class="fixed inset-0 bg-black/50 z-[60] hidden items-center justify-center p-4">
+      <div class="bg-warm-white max-w-md w-full p-8 relative">
+        <button
+          id="close-modal"
+          class="absolute top-4 right-4 text-clay-muted hover:text-ink transition-colors text-2xl leading-none"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+        <h2 class="text-2xl font-serif font-light text-ink mb-3 tracking-wide italic">
+          Stay Updated
+        </h2>
+        <p class="text-clay-muted mb-6 tracking-wide font-light text-sm leading-relaxed">
+          Get notified about upcoming fairs and events. Just occasional updates—no spam. Unsubscribe anytime.
+        </p>
+
+        <form
+          action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUsername}`}
+          method="post"
+          referrerpolicy="unsafe-url"
+          class="space-y-4"
+        >
+          <div>
+            <label for="bd-email" class="block text-xs uppercase tracking-widest text-clay-muted mb-2">
+              Email Address
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="bd-email"
+              placeholder="you@example.com"
+              required
+              class="w-full px-4 py-3 border border-clay-muted/30 focus:border-ink focus:outline-none transition-colors tracking-wide text-sm"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full px-6 py-3 bg-ink text-warm-white hover:opacity-80 transition-opacity uppercase tracking-widest text-xs"
+          >
+            Subscribe
+          </button>
+        </form>
+
+        <p class="text-xs text-clay-muted mt-4 tracking-wide text-center">
+          Unsubscribe anytime
+        </p>
+      </div>
+    </div>
+
     <div class="py-12">
       <!-- Upcoming Events -->
       {upcomingEvents.length > 0 && (
         <section class="mb-32">
-          <h2 class="text-3xl font-serif font-light text-stone-grey mb-12 tracking-wide italic">
+          <h2 class="text-3xl font-serif font-light text-ink mb-12 tracking-wide italic">
             Upcoming
           </h2>
           <div class="space-y-12">
             {upcomingEvents.map((event) => (
               <article class="pb-12 last:pb-0">
-                <h3 class="text-2xl font-serif font-light text-stone-grey mb-4 tracking-wide italic">
+                <h3 class="text-2xl font-serif font-light text-ink mb-4 tracking-wide italic">
                   {event.title}
                 </h3>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-clay-muted mb-5 tracking-wide metadata">
@@ -50,9 +153,9 @@ function formatDate(dateString: string): string {
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    {formatDate(event.date)}
+                    {formatDateRange(event.date, event.endDate)}
                   </time>
-                  <span class="hidden sm:block text-zinc-400">•</span>
+                  <span class="hidden sm:block text-clay-muted">•</span>
                   <span class="flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -62,7 +165,7 @@ function formatDate(dateString: string): string {
                   </span>
                 </div>
                 {event.description && (
-                  <p class="text-stone-grey mb-5 leading-relaxed tracking-wide font-light">
+                  <p class="text-ink mb-5 leading-relaxed tracking-wide font-light">
                     {event.description}
                   </p>
                 )}
@@ -71,7 +174,7 @@ function formatDate(dateString: string): string {
                     href={event.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 text-stone-grey hover:opacity-70 transition-opacity duration-200 tracking-wide metadata"
+                    class="inline-flex items-center gap-2 text-ink hover:opacity-70 transition-opacity duration-200 tracking-wide metadata"
                   >
                     Learn more
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,17 +191,17 @@ function formatDate(dateString: string): string {
       <!-- Past Events -->
       {pastEvents.length > 0 && (
         <section>
-          <h2 class="text-3xl font-serif font-light text-stone-grey mb-12 tracking-wide italic">
+          <h2 class="text-3xl font-serif font-light text-ink mb-12 tracking-wide italic">
             Past Events
           </h2>
           <div class="space-y-10 opacity-60">
             {pastEvents.map((event) => (
               <article class="pb-10 last:pb-0">
-                <h3 class="text-xl font-serif font-light text-stone-grey mb-3 tracking-wide italic">
+                <h3 class="text-xl font-serif font-light text-ink mb-3 tracking-wide italic">
                   {event.title}
                 </h3>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-clay-muted text-sm tracking-wide metadata">
-                  <time>{formatDate(event.date)}</time>
+                  <time>{formatDateRange(event.date, event.endDate)}</time>
                   <span class="hidden sm:block text-clay-muted">•</span>
                   <span>{event.location}</span>
                 </div>
@@ -118,3 +221,42 @@ function formatDate(dateString: string): string {
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  // Subscribe modal functionality
+  const subscribeButton = document.getElementById('subscribe-button');
+  const subscribeModal = document.getElementById('subscribe-modal');
+  const closeModal = document.getElementById('close-modal');
+
+  if (subscribeButton && subscribeModal && closeModal) {
+    // Open modal
+    subscribeButton.addEventListener('click', () => {
+      subscribeModal.classList.remove('hidden');
+      subscribeModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    });
+
+    // Close modal
+    const closeModalHandler = () => {
+      subscribeModal.classList.add('hidden');
+      subscribeModal.classList.remove('flex');
+      document.body.style.overflow = '';
+    };
+
+    closeModal.addEventListener('click', closeModalHandler);
+
+    // Close on background click
+    subscribeModal.addEventListener('click', (e) => {
+      if (e.target === subscribeModal) {
+        closeModalHandler();
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !subscribeModal.classList.contains('hidden')) {
+        closeModalHandler();
+      }
+    });
+  }
+</script>

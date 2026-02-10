@@ -1,21 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { sanityClient, type Work, type Profile } from '../lib/sanityClient';
+import { sanityClient, type HomeShowcase, type Profile } from '../lib/sanityClient';
 
-const works = await sanityClient.fetch<Work[]>(
-  `*[_type == "work" && featured == true] | order(homeOrder asc, year desc) {
+const works = await sanityClient.fetch<HomeShowcase[]>(
+  `*[_type == "homeShowcase"] | order(order asc) {
     _id,
     title,
-    slug,
     year,
     dimensions,
-    category,
     images,
     description,
-    featured,
-    order,
-    homeOrder
+    order
   }`
 );
 
@@ -48,7 +44,7 @@ const profile = await sanityClient.fetch<Profile>(
     {works.length === 0 ? (
       <div class="text-center py-32">
         <p class="text-clay-muted text-lg tracking-wide font-light">
-          No featured works yet. Add some in the Sanity Studio!
+          No showcase items yet. Add some in the Sanity Studio under "Home Showcase"!
         </p>
       </div>
     ) : (
