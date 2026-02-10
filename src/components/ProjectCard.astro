@@ -43,10 +43,10 @@ const mainImage = work.images[0];
 
   <!-- Details -->
   <div class="space-y-2">
-    <h3 class="text-2xl font-sans font-medium uppercase tracking-[0.25em] text-zinc-900">
+    <h3 class="text-lg font-serif italic text-ink">
       {work.title}
     </h3>
-    <p class="metadata text-clay-muted">
+    <p class="text-[9px] font-sans uppercase tracking-widest text-zinc-400">
       {work.year}{work.dimensions ? ` • ${work.dimensions}` : ''}
     </p>
   </div>
@@ -91,7 +91,7 @@ const mainImage = work.images[0];
 
     <!-- Info Panel -->
     <div class="w-80 text-white space-y-4">
-      <h2 id="lightbox-title" class="text-3xl font-sans font-medium uppercase tracking-[0.25em] text-white"></h2>
+      <h2 id="lightbox-title" class="text-3xl font-serif italic text-white"></h2>
       <p id="lightbox-year-dimensions" class="text-zinc-400 tracking-wide"></p>
       <p id="lightbox-description" class="text-zinc-300 leading-relaxed"></p>
       <div id="lightbox-details" class="space-y-2 text-sm text-zinc-400"></div>

@@ -31,11 +31,14 @@ const profile = await sanityClient.fetch<Profile>(
         {profile.homeIntro}
       </p>
     ) : (
-      <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
-        Chiswick-based ceramicist making small-batch, wheel-thrown pottery for everyday use.
-        Influenced by Chinese and Japanese traditions, my work focuses on functional, classical
-        forms with hand-painted oxide decoration.
-      </p>
+      <div class="space-y-4">
+        <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
+          Functional forms inspired by Eastern minimalism.
+        </p>
+        <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
+          Hand-painted and wheel-thrown in Chiswick, my work explores the intersection of classical tradition and the quiet rituals of daily life.
+        </p>
+      </div>
     )}
   </section>
 

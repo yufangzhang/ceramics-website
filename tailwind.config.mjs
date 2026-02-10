@@ -7,6 +7,10 @@ export default {
         serif: ['Cormorant Garamond', 'serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
+      letterSpacing: {
+        'gallery': '0.25em',
+        'museum': '0.6em',
+      },
       colors: {
         'warm-white': '#FAF9F6', // The "Paper" background
         'bg-gallery': '#FAF9F6', // Same as warm-white, for clarity

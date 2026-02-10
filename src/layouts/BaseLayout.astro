@@ -81,7 +81,7 @@ const profile = await sanityClient.fetch<Profile>(
         <!-- Brand name/logo on left -->
         <a href={link('/')} class="group overflow-visible">
           <div class="flex items-start gap-2 overflow-visible">
-            <h1 style="font-size: 28px;" class="font-medium uppercase tracking-[0.25em] text-zinc-900 font-sans leading-tight transition-colors group-hover:opacity-70">
+            <h1 style="font-size: 27.5px;" class="font-medium uppercase tracking-gallery text-zinc-900 font-sans leading-tight transition-colors group-hover:opacity-70">
               Yufang Zhang
             </h1>
             {profile?.logo?.asset && (
@@ -92,7 +92,7 @@ const profile = await sanityClient.fetch<Profile>(
               />
             )}
           </div>
-          <p class="text-[10px] uppercase tracking-[0.6em] text-zinc-400 mt-4">
+          <p class="text-[10px] uppercase tracking-museum text-zinc-400 mt-4">
             Ceramic Artist
           </p>
         </a>
@@ -113,7 +113,7 @@ const profile = await sanityClient.fetch<Profile>(
           <a
             href={link('/')}
             class:list={[
-              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
               (currentPath === baseUrl || currentPath === `${baseUrl}/`) ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
@@ -122,7 +122,7 @@ const profile = await sanityClient.fetch<Profile>(
           <a
             href={link('/works/')}
             class:list={[
-              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
               currentPath.includes("/works") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
@@ -131,7 +131,7 @@ const profile = await sanityClient.fetch<Profile>(
           <a
             href={link('/events/')}
             class:list={[
-              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
               currentPath.includes("/events") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
@@ -140,7 +140,7 @@ const profile = await sanityClient.fetch<Profile>(
           <a
             href={link('/about/')}
             class:list={[
-              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
               currentPath.includes("/about") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
@@ -149,7 +149,7 @@ const profile = await sanityClient.fetch<Profile>(
           <a
             href={link('/contact/')}
             class:list={[
-              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
               currentPath.includes("/contact") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
@@ -168,8 +168,8 @@ const profile = await sanityClient.fetch<Profile>(
         <a
           href={link('/')}
           class:list={[
-            "text-2xl uppercase tracking-[0.3em] transition-opacity",
-            (currentPath === baseUrl || currentPath === `${baseUrl}/`) ? "text-ink font-normal" : "text-clay-muted hover:text-ink"
+            "text-2xl uppercase tracking-gallery transition-opacity font-light",
+            (currentPath === baseUrl || currentPath === `${baseUrl}/`) ? "text-ink" : "text-clay-muted hover:text-ink"
           ]}
         >
           Home
@@ -177,8 +177,8 @@ const profile = await sanityClient.fetch<Profile>(
         <a
           href={link('/works/')}
           class:list={[
-            "text-2xl uppercase tracking-[0.3em] transition-opacity",
-            currentPath.includes("/works") ? "text-ink font-normal" : "text-clay-muted hover:text-ink"
+            "text-2xl uppercase tracking-gallery transition-opacity font-light",
+            currentPath.includes("/works") ? "text-ink" : "text-clay-muted hover:text-ink"
           ]}
         >
           Selected Works
@@ -186,8 +186,8 @@ const profile = await sanityClient.fetch<Profile>(
         <a
           href={link('/events/')}
           class:list={[
-            "text-2xl uppercase tracking-[0.3em] transition-opacity",
-            currentPath.includes("/events") ? "text-ink font-normal" : "text-clay-muted hover:text-ink"
+            "text-2xl uppercase tracking-gallery transition-opacity font-light",
+            currentPath.includes("/events") ? "text-ink" : "text-clay-muted hover:text-ink"
           ]}
         >
           Events
@@ -195,8 +195,8 @@ const profile = await sanityClient.fetch<Profile>(
         <a
           href={link('/about/')}
           class:list={[
-            "text-2xl uppercase tracking-[0.3em] transition-opacity",
-            currentPath.includes("/about") ? "text-ink font-normal" : "text-clay-muted hover:text-ink"
+            "text-2xl uppercase tracking-gallery transition-opacity font-light",
+            currentPath.includes("/about") ? "text-ink" : "text-clay-muted hover:text-ink"
           ]}
         >
           About
@@ -204,8 +204,8 @@ const profile = await sanityClient.fetch<Profile>(
         <a
           href={link('/contact/')}
           class:list={[
-            "text-2xl uppercase tracking-[0.3em] transition-opacity",
-            currentPath.includes("/contact") ? "text-ink font-normal" : "text-clay-muted hover:text-ink"
+            "text-2xl uppercase tracking-gallery transition-opacity font-light",
+            currentPath.includes("/contact") ? "text-ink" : "text-clay-muted hover:text-ink"
           ]}
         >
           Contact
