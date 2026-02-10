@@ -6,6 +6,15 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'logo',
+      title: 'Logo',
+      type: 'image',
+      description: 'Your logo for the navigation (optional). If not provided, text name will be shown.',
+      options: {
+        hotspot: false,
+      },
+    }),
+    defineField({
       name: 'homeIntro',
       title: 'Home Page Introduction',
       type: 'text',
