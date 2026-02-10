@@ -13,16 +13,16 @@ const profile = await sanityClient.fetch<Profile>(
 ---
 
 <BaseLayout title="Contact - Yufang Zhang Ceramics" description="Commission inquiries and sales">
-  <main class="min-h-screen bg-[#F5F2ED] text-zinc-800 px-8 py-24">
+  <main class="min-h-screen px-8 py-24" style="background-color: var(--color-bg); color: var(--color-text-main);">
     <div class="max-w-2xl mx-auto text-center">
 
       <!-- Header -->
       <header class="mb-20">
-        <h1 class="text-[11px] uppercase tracking-museum text-zinc-500 mb-8">
+        <h1 class="text-[11px] uppercase tracking-museum mb-8" style="color: var(--color-text-muted);">
           Acquisitions & Inquiries
         </h1>
         <div class="max-w-lg mx-auto">
-          <p class="text-sm font-light text-zinc-600 leading-relaxed">
+          <p class="text-sm font-light leading-relaxed" style="color: var(--color-text-main); opacity: 0.8;">
             For inquiries regarding pieces shown in Selected Works, please include the name of the work in your message. To stay updated on new releases or to inquire about available work, please use the form below or send a DM on Instagram.
           </p>
         </div>
@@ -37,14 +37,17 @@ const profile = await sanityClient.fetch<Profile>(
       >
         <!-- Name Field -->
         <div class="relative">
-          <label for="name" class="text-[9px] uppercase tracking-widest text-zinc-500 mb-1 block">
+          <label for="name" class="text-[9px] uppercase tracking-widest mb-1 block" style="color: var(--color-text-muted);">
             Name <span class="text-red-400">*</span>
           </label>
           <input
             type="text"
             id="name"
             name="name"
-            class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-zinc-800 transition-colors font-light"
+            class="w-full bg-transparent border-b py-3 outline-none transition-colors font-light"
+            style="border-color: var(--color-line); color: var(--color-text-main);"
+            onfocus="this.style.borderColor='var(--color-text-main)';"
+            onblur="this.style.borderColor='var(--color-line)';"
             placeholder="Your name"
             required
           />
@@ -52,14 +55,17 @@ const profile = await sanityClient.fetch<Profile>(
 
         <!-- Email Field -->
         <div class="relative">
-          <label for="email" class="text-[9px] uppercase tracking-widest text-zinc-500 mb-1 block">
+          <label for="email" class="text-[9px] uppercase tracking-widest mb-1 block" style="color: var(--color-text-muted);">
             Email <span class="text-red-400">*</span>
           </label>
           <input
             type="email"
             id="email"
             name="email"
-            class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-zinc-800 transition-colors font-light"
+            class="w-full bg-transparent border-b py-3 outline-none transition-colors font-light"
+            style="border-color: var(--color-line); color: var(--color-text-main);"
+            onfocus="this.style.borderColor='var(--color-text-main)';"
+            onblur="this.style.borderColor='var(--color-line)';"
             placeholder="Email address"
             required
           />
@@ -67,13 +73,16 @@ const profile = await sanityClient.fetch<Profile>(
 
         <!-- Inquiry Type -->
         <div class="relative">
-          <label for="inquiry-type" class="text-[9px] uppercase tracking-widest text-zinc-500 mb-1 block">
+          <label for="inquiry-type" class="text-[9px] uppercase tracking-widest mb-1 block" style="color: var(--color-text-muted);">
             Inquiry Type <span class="text-red-400">*</span>
           </label>
           <select
             id="inquiry-type"
             name="inquiry-type"
-            class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-zinc-800 transition-colors font-light appearance-none cursor-pointer"
+            class="w-full bg-transparent border-b py-3 outline-none transition-colors font-light appearance-none cursor-pointer"
+            style="border-color: var(--color-line); color: var(--color-text-main);"
+            onfocus="this.style.borderColor='var(--color-text-main)';"
+            onblur="this.style.borderColor='var(--color-line)';"
             required
           >
             <option value="">Select...</option>
@@ -86,14 +95,17 @@ const profile = await sanityClient.fetch<Profile>(
 
         <!-- Message Field -->
         <div class="relative">
-          <label for="message" class="text-[9px] uppercase tracking-widest text-zinc-500 mb-1 block">
+          <label for="message" class="text-[9px] uppercase tracking-widest mb-1 block" style="color: var(--color-text-muted);">
             Message <span class="text-red-400">*</span>
           </label>
           <textarea
             id="message"
             name="message"
             rows="4"
-            class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-zinc-800 transition-colors font-light resize-none"
+            class="w-full bg-transparent border-b py-3 outline-none transition-colors font-light resize-none"
+            style="border-color: var(--color-line); color: var(--color-text-main);"
+            onfocus="this.style.borderColor='var(--color-text-main)';"
+            onblur="this.style.borderColor='var(--color-line)';"
             placeholder="How can I help you?"
             required
           ></textarea>
@@ -112,7 +124,7 @@ const profile = await sanityClient.fetch<Profile>(
       </form>
 
       <!-- Social Footer -->
-      <div class="mt-24 pt-12 border-t border-zinc-200/60">
+      <div class="mt-24 pt-12" style="border-top: 1px solid var(--color-line);">
         {profile?.instagramHandle ? (
           <a
             href={`https://instagram.com/${profile.instagramHandle}`}
@@ -120,15 +132,15 @@ const profile = await sanityClient.fetch<Profile>(
             rel="noopener noreferrer"
             class="group inline-flex flex-col items-center"
           >
-            <span class="text-[9px] uppercase tracking-editorial text-zinc-400 mb-2">
+            <span class="text-[9px] uppercase tracking-editorial mb-2" style="color: var(--color-text-muted);">
               Social
             </span>
-            <span class="text-sm font-medium tracking-wide group-hover:text-zinc-500 transition-colors underline underline-offset-8 decoration-zinc-200">
+            <span class="text-sm font-medium tracking-wide group-hover:opacity-70 transition-opacity underline underline-offset-8" style="color: var(--color-text-main); text-decoration-color: var(--color-line);">
               @{profile.instagramHandle}
             </span>
           </a>
         ) : (
-          <div class="text-[9px] uppercase tracking-editorial text-zinc-400">
+          <div class="text-[9px] uppercase tracking-editorial" style="color: var(--color-text-muted);">
             Follow the Studio
           </div>
         )}
@@ -137,12 +149,13 @@ const profile = await sanityClient.fetch<Profile>(
       <!-- Alternative: Direct Email Link -->
       {profile?.email && (
         <div class="mt-8">
-          <p class="text-[9px] uppercase tracking-widest text-zinc-400 mb-2">
+          <p class="text-[9px] uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">
             Or Email Directly
           </p>
           <a
             href={`mailto:${profile.email}`}
-            class="text-sm text-zinc-600 hover:text-zinc-900 transition-colors font-light"
+            class="text-sm font-light transition-opacity hover:opacity-70"
+            style="color: var(--color-text-main);"
           >
             {profile.email}
           </a>

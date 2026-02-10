@@ -47,12 +47,25 @@ const faviconUrl = profile?.favicon?.asset
       import '../lib/sentry';
     </script>
     <style is:global>
+      /* Softened Color Palette with CSS Variables */
+      :root {
+        --color-bg: #F5F2ED;      /* Warm Bone */
+        --color-text-main: #45413E; /* Warm Stone */
+        --color-text-muted: #918C86; /* Warm Taupe */
+        --color-line: #DEDAD4;     /* Deep Bone */
+      }
+
       /* Global CSS Health Fixes */
       html {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        background-color: #F5F2ED; /* Set the global gallery bone color */
-        color: #27272a; /* zinc-800 */
+        background-color: var(--color-bg);
+        color: var(--color-text-main);
+      }
+
+      body {
+        background-color: var(--color-bg);
+        color: var(--color-text-main);
       }
 
       /* Typography */
@@ -61,9 +74,10 @@ const faviconUrl = profile?.favicon?.asset
         font-style: italic;
       }
 
-      h2, h3, h4 {
+      h1, h2, h3, h4 {
         font-family: "Cormorant Garamond", serif;
         font-style: italic;
+        color: var(--color-text-main);
       }
 
       nav a, .metadata, .uppercase {
@@ -71,7 +85,8 @@ const faviconUrl = profile?.favicon?.asset
         text-transform: uppercase;
         letter-spacing: 0.2em;
         font-size: 0.7rem;
-        font-weight: 300; /* Lighter weight for minimalist vibe */
+        font-weight: 300;
+        color: var(--color-text-main);
       }
 
       /* Subtle image fade-in */
@@ -80,27 +95,32 @@ const faviconUrl = profile?.favicon?.asset
         transition: opacity 0.6s ease-in-out;
       }
 
-      /* Unified Button Component */
+      /* Date and Location Labels */
+      .date-label, .location-label {
+        color: var(--color-text-muted);
+      }
+
+      /* Unified Ghost Button Component */
       .btn-zen {
-        background-color: #27272a; /* zinc-800 */
-        color: #F5F2ED;
-        border: 1px solid #27272a;
+        background-color: transparent;
+        color: var(--color-text-main);
+        border: 1px solid var(--color-text-main);
         padding: 0.875rem 3rem;
         font-size: 0.625rem;
         text-transform: uppercase;
         letter-spacing: 0.4em;
-        transition: all 500ms ease-in-out;
+        transition: all 700ms ease-in-out;
       }
 
       .btn-zen:hover {
-        background-color: transparent;
-        color: #27272a; /* zinc-800 */
+        background-color: var(--color-text-main);
+        color: var(--color-bg);
       }
     </style>
   </head>
-  <body class="min-h-screen bg-[#F5F2ED] text-zinc-800 font-sans antialiased">
+  <body class="min-h-screen bg-[var(--color-bg)] font-sans antialiased" style="color: var(--color-text-main);">
     <!-- Horizontal minimalist navigation -->
-    <nav class="w-full py-8 px-8 bg-[#F5F2ED] sticky top-0 z-50 backdrop-blur-sm bg-opacity-100">
+    <nav class="w-full py-8 px-8 sticky top-0 z-50 backdrop-blur-sm bg-opacity-100" style="background-color: var(--color-bg);">
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <!-- Brand name/logo on left -->
         <a href={link('/')} class="group flex-shrink-0">
@@ -113,10 +133,10 @@ const faviconUrl = profile?.favicon?.asset
               />
             )}
             <div>
-              <h1 style="font-size: 27.5px;" class="font-medium uppercase tracking-gallery text-zinc-900 font-sans leading-tight transition-colors group-hover:opacity-70">
+              <h1 style="font-size: 27.5px; color: var(--color-text-main);" class="font-medium uppercase tracking-gallery font-sans leading-tight transition-colors group-hover:opacity-70">
                 Yufang Zhang
               </h1>
-              <p class="text-[10px] uppercase tracking-museum text-zinc-400 mt-4">
+              <p class="text-[10px] uppercase tracking-museum mt-4" style="color: var(--color-text-muted);">
                 Ceramic Artist
               </p>
             </div>
@@ -126,7 +146,8 @@ const faviconUrl = profile?.favicon?.asset
         <!-- Mobile menu button -->
         <button
           id="mobile-menu-button"
-          class="md:hidden text-ink p-2 flex-shrink-0"
+          class="md:hidden p-2 flex-shrink-0"
+          style="color: var(--color-text-main);"
           aria-label="Toggle menu"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,46 +159,36 @@ const faviconUrl = profile?.favicon?.asset
         <div class="hidden md:flex items-center gap-x-8 flex-shrink-0">
           <a
             href={link('/')}
-            class:list={[
-              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
-              (currentPath === baseUrl || currentPath === `${baseUrl}/`) ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
-            ]}
+            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
+            style={`color: var(--color-text-main); ${(currentPath === baseUrl || currentPath === `${baseUrl}/`) ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
           >
             Home
           </a>
           <a
             href={link('/works/')}
-            class:list={[
-              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
-              currentPath.includes("/works") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
-            ]}
+            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
+            style={`color: var(--color-text-main); ${currentPath.includes("/works") ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
           >
             Selected Works
           </a>
           <a
             href={link('/events/')}
-            class:list={[
-              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
-              currentPath.includes("/events") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
-            ]}
+            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
+            style={`color: var(--color-text-main); ${currentPath.includes("/events") ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
           >
             Events
           </a>
           <a
             href={link('/about/')}
-            class:list={[
-              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
-              currentPath.includes("/about") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
-            ]}
+            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
+            style={`color: var(--color-text-main); ${currentPath.includes("/about") ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
           >
             About
           </a>
           <a
             href={link('/contact/')}
-            class:list={[
-              "text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light",
-              currentPath.includes("/contact") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
-            ]}
+            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
+            style={`color: var(--color-text-main); ${currentPath.includes("/contact") ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
           >
             Contact
           </a>

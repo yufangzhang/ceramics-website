@@ -27,15 +27,15 @@ const profile = await sanityClient.fetch<Profile>(
   <!-- Hero Section -->
   <section class="text-center pt-6 pb-12 max-w-4xl mx-auto">
     {profile?.homeIntro ? (
-      <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
+      <p class="text-base md:text-lg leading-relaxed tracking-wide font-light" style="color: var(--color-text-muted);">
         {profile.homeIntro}
       </p>
     ) : (
       <div class="space-y-4">
-        <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
+        <p class="text-base md:text-lg leading-relaxed tracking-wide font-light" style="color: var(--color-text-muted);">
           Functional forms inspired by Eastern minimalism.
         </p>
-        <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
+        <p class="text-base md:text-lg leading-relaxed tracking-wide font-light" style="color: var(--color-text-muted);">
           Hand-painted and wheel-thrown in Chiswick, my work explores the intersection of classical tradition and the quiet rituals of daily life.
         </p>
       </div>
