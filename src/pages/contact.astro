@@ -38,7 +38,7 @@ const profile = await sanityClient.fetch<Profile>(
         <!-- Name Field -->
         <div class="relative">
           <label for="name" class="text-[9px] uppercase tracking-widest text-zinc-400 mb-1 block">
-            Name
+            Name <span class="text-red-400">*</span>
           </label>
           <input
             type="text"
@@ -53,7 +53,7 @@ const profile = await sanityClient.fetch<Profile>(
         <!-- Email Field -->
         <div class="relative">
           <label for="email" class="text-[9px] uppercase tracking-widest text-zinc-400 mb-1 block">
-            Email
+            Email <span class="text-red-400">*</span>
           </label>
           <input
             type="email"
@@ -68,7 +68,7 @@ const profile = await sanityClient.fetch<Profile>(
         <!-- Inquiry Type -->
         <div class="relative">
           <label for="inquiry-type" class="text-[9px] uppercase tracking-widest text-zinc-400 mb-1 block">
-            Inquiry Type
+            Inquiry Type <span class="text-red-400">*</span>
           </label>
           <select
             id="inquiry-type"
@@ -87,7 +87,7 @@ const profile = await sanityClient.fetch<Profile>(
         <!-- Message Field -->
         <div class="relative">
           <label for="message" class="text-[9px] uppercase tracking-widest text-zinc-400 mb-1 block">
-            Message
+            Message <span class="text-red-400">*</span>
           </label>
           <textarea
             id="message"
