@@ -30,6 +30,7 @@ const profile = await sanityClient.fetch<Profile>(
 
       <!-- Contact Form -->
       <form
+        id="contact-form"
         action={profile?.email ? `https://formspree.io/f/YOUR_FORMSPREE_ID` : '#'}
         method="POST"
         class="space-y-12 text-left"
@@ -101,10 +102,11 @@ const profile = await sanityClient.fetch<Profile>(
         <!-- Submit Button -->
         <div class="flex justify-center pt-10">
           <button
+            id="submit-button"
             type="submit"
-            class="bg-ink-dark text-gallery-bone px-14 py-4 text-[10px] uppercase tracking-editorial hover:bg-zinc-700 transition-all duration-300 shadow-sm"
+            class="bg-ink-dark text-gallery-bone border border-ink-dark px-14 py-4 text-[10px] uppercase tracking-editorial transition-all duration-300 shadow-sm outline-none hover:bg-transparent hover:text-ink-dark active:scale-95 active:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Send Message
+            <span id="button-text">Send Message</span>
           </button>
         </div>
       </form>
@@ -181,3 +183,21 @@ const profile = await sanityClient.fetch<Profile>(
     padding-right: 2rem;
   }
 </style>
+
+<script>
+  // Handle form submission state
+  const form = document.getElementById('contact-form');
+  const submitButton = document.getElementById('submit-button');
+  const buttonText = document.getElementById('button-text');
+
+  if (form && submitButton && buttonText) {
+    form.addEventListener('submit', function() {
+      // Change button text and disable it
+      buttonText.textContent = 'Sending...';
+      submitButton.disabled = true;
+
+      // Optional: Add a subtle loading indicator
+      submitButton.classList.add('opacity-75');
+    });
+  }
+</script>
