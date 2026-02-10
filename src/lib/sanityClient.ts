@@ -113,6 +113,11 @@ export interface Profile {
       _ref: string;
     };
   };
+  favicon?: {
+    asset: {
+      _ref: string;
+    };
+  };
   homeIntro: string;
   aboutMe: string;
   profileImage: {

@@ -15,6 +15,15 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'favicon',
+      title: 'Favicon (Browser Tab Icon)',
+      type: 'image',
+      description: 'Custom favicon for browser tabs. Recommended: 64x64 PNG with rounded corners and background. If not provided, logo will be used.',
+      options: {
+        hotspot: false,
+      },
+    }),
+    defineField({
       name: 'homeIntro',
       title: 'Home Page Introduction',
       type: 'text',

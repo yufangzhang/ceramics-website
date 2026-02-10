@@ -9,6 +9,7 @@ export default {
       },
       letterSpacing: {
         'gallery': '0.25em',
+        'editorial': '0.4em',
         'museum': '0.6em',
       },
       colors: {
