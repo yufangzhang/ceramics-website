@@ -86,9 +86,16 @@ export default defineType({
     }),
     defineField({
       name: 'order',
-      title: 'Display Order',
+      title: 'Gallery Display Order',
       type: 'number',
-      description: 'Order for displaying on homepage (lower numbers appear first)',
+      description: 'Order for displaying in the Gallery page (lower numbers appear first)',
+      initialValue: 999,
+    }),
+    defineField({
+      name: 'homeOrder',
+      title: 'Home Page Display Order',
+      type: 'number',
+      description: 'Order for displaying on the Home page (lower numbers appear first). Only applies to featured works.',
       initialValue: 999,
     }),
   ],

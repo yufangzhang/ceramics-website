@@ -4,7 +4,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import { sanityClient, type Work } from '../lib/sanityClient';
 
 const works = await sanityClient.fetch<Work[]>(
-  `*[_type == "work" && featured == true] | order(order asc, year desc) {
+  `*[_type == "work" && featured == true] | order(homeOrder asc, year desc) {
     _id,
     title,
     slug,
@@ -14,7 +14,8 @@ const works = await sanityClient.fetch<Work[]>(
     images,
     description,
     featured,
-    order
+    order,
+    homeOrder
   }`
 );
 ---
@@ -38,9 +39,11 @@ const works = await sanityClient.fetch<Work[]>(
         </p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-        {works.map((work) => (
-          <ProjectCard work={work} />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-32">
+        {works.map((work, index) => (
+          <div class={index % 2 !== 0 ? "md:mt-40" : ""}>
+            <ProjectCard work={work} />
+          </div>
         ))}
       </div>
     )}

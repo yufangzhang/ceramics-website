@@ -1,15 +1,49 @@
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import * as Sentry from '@sentry/astro';
 
-export const sanityClient = createClient({
+// Create Sanity client with monitoring
+const baseClient = createClient({
   projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
   dataset: import.meta.env.PUBLIC_SANITY_DATASET,
   apiVersion: import.meta.env.PUBLIC_SANITY_API_VERSION,
   useCdn: true,
 });
 
-const builder = imageUrlBuilder(sanityClient);
+// Wrap fetch with Sentry breadcrumbs for monitoring
+export const sanityClient = {
+  ...baseClient,
+  fetch: async <T>(query: string, params?: any): Promise<T> => {
+    Sentry.addBreadcrumb({
+      category: 'sanity',
+      message: `Fetching: ${query.substring(0, 100)}...`,
+      level: 'info',
+      data: { params },
+    });
+
+    try {
+      const result = await baseClient.fetch<T>(query, params);
+      Sentry.addBreadcrumb({
+        category: 'sanity',
+        message: 'Fetch successful',
+        level: 'info',
+      });
+      return result;
+    } catch (error) {
+      Sentry.addBreadcrumb({
+        category: 'sanity',
+        message: 'Fetch failed',
+        level: 'error',
+        data: { error: String(error) },
+      });
+      throw error;
+    }
+  },
+};
+
+// Use baseClient for image URL builder (not the wrapped client)
+const builder = imageUrlBuilder(baseClient);
 
 export function urlFor(source: SanityImageSource) {
   return builder.image(source);
@@ -38,6 +72,7 @@ export interface Work {
   description?: string;
   featured: boolean;
   order?: number;
+  homeOrder?: number;
 }
 
 export interface Event {
@@ -62,6 +97,8 @@ export interface Profile {
     };
   };
   instagramHandle?: string;
+  email: string;
+  location?: string;
 }
 
 export interface Stockist {

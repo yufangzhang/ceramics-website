@@ -29,6 +29,21 @@ export default defineType({
       description: 'Your Instagram handle (without @)',
       placeholder: 'yufangzhangceramics',
     }),
+    defineField({
+      name: 'email',
+      title: 'Email',
+      type: 'string',
+      description: 'Your contact email',
+      placeholder: 'yufang@example.com',
+      validation: (Rule) => Rule.required().email(),
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'string',
+      description: 'Your location/city',
+      placeholder: 'Chiswick, London',
+    }),
   ],
   preview: {
     prepare() {

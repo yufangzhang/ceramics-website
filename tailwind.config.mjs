@@ -8,6 +8,7 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        'warm-white': '#FAF9F6', // The "Paper" background
         'gallery-white': '#FAF9F6',
         'stone-grey': '#2D2D2D',
         'clay-muted': '#A3A3A3',

@@ -7,7 +7,9 @@ const profile = await sanityClient.fetch<Profile>(
     _id,
     aboutMe,
     profileImage,
-    instagramHandle
+    instagramHandle,
+    email,
+    location
   }`
 );
 ---
@@ -27,7 +29,6 @@ const profile = await sanityClient.fetch<Profile>(
                 .url()}
               alt="Yufang Zhang"
               class="w-full h-auto object-contain"
-              onload="this.classList.add('loaded')"
             />
           </div>
         </div>
