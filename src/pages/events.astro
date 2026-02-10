@@ -43,14 +43,21 @@ function formatEventDate(dateString: string, endDateString?: string): string {
   const date = new Date(dateString);
   const month = date.toLocaleDateString('en-US', { month: 'long' });
   const day = date.getDate();
+  const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
   if (endDateString) {
     const endDate = new Date(endDateString);
     const endDay = endDate.getDate();
-    return `${month} ${day} — ${endDay}`;
+    const endTime = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+    // Check if it's the same day
+    if (date.toDateString() === endDate.toDateString()) {
+      return `${month} ${day} • ${time} — ${endTime}`;
+    }
+    return `${month} ${day} — ${endDay} • ${time} — ${endTime}`;
   }
 
-  return `${month} ${day}`;
+  return `${month} ${day} • ${time}`;
 }
 
 function formatMonthOnly(dateString: string): string {
@@ -60,18 +67,88 @@ function formatMonthOnly(dateString: string): string {
 ---
 
 <BaseLayout title="Events - Yufang Zhang Ceramics" description="Upcoming pottery workshops, exhibitions, and events">
-  <main class="min-h-screen bg-gallery-bone px-8 py-24">
-    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 lg:gap-24">
+  <main class="min-h-screen bg-[#F5F2ED] text-[#27272A] px-8 pt-12 pb-24">
+    <div class="max-w-3xl mx-auto">
 
-      <!-- Main Content -->
-      <div class="md:col-span-9 space-y-32">
+      <!-- Current & Upcoming Section -->
+      <section class="mb-24">
+        <div class="flex items-baseline gap-4 mb-12">
+          <h2 class="text-[9px] uppercase tracking-[0.4em] text-zinc-900 font-sans">Current & Upcoming</h2>
+          <div class="h-[1px] flex-grow bg-zinc-200/60"></div>
+        </div>
 
-        <!-- Page Header -->
-        <header class="mb-32">
-          <h1 class="text-[11px] uppercase tracking-[0.7em] text-zinc-400 font-sans">Chronology</h1>
-        </header>
+        {years.length > 0 && eventsByYear[currentYear]?.length > 0 ? (
+          <div class="space-y-16">
+            {eventsByYear[currentYear].map((event) => (
+              <article class="group">
+                <div class="flex flex-col">
+                  <span class="text-[10px] font-medium text-zinc-500 font-sans tracking-wide mb-2">
+                    {formatEventDate(event.date, event.endDate)}, {currentYear}
+                  </span>
 
-        <!-- Floating Subscribe Button -->
+                  <h3 class="text-2xl font-medium tracking-tight text-zinc-900 mb-4">
+                    {event.title}
+                  </h3>
+
+                  {event.description && (
+                    <p class="text-base font-light text-zinc-600 leading-relaxed max-w-lg mb-4">
+                      {event.description}
+                    </p>
+                  )}
+
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3 h-3 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span class="text-[10px] uppercase tracking-widest text-zinc-400 italic">
+                      {event.location}
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="text-sm font-light text-zinc-600">
+            No events scheduled at the moment.
+          </p>
+        )}
+      </section>
+
+      <!-- Archive Section -->
+      {years.filter(year => year < currentYear).length > 0 && (
+        <section class="relative border-l border-zinc-200 ml-1">
+          <div class="absolute left-[-1px] top-[-30px] pl-8">
+            <h2 class="text-[9px] uppercase tracking-[0.4em] text-zinc-400">Archive</h2>
+          </div>
+
+          <div class="space-y-24 pt-4">
+            {years.filter(year => year < currentYear).map((year) => (
+              <div class="relative pl-12 md:pl-20" id={`year-${year}`}>
+                <span class="absolute left-[-1px] top-0 -translate-x-1/2 bg-[#F5F2ED] py-1 text-[10px] font-medium tracking-[0.3em] text-zinc-400 uppercase">
+                  {year}
+                </span>
+
+                <div class="space-y-12">
+                  {eventsByYear[year].map((event) => (
+                    <article class="opacity-70 hover:opacity-100 transition-opacity">
+                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 font-sans block mb-1">
+                        {formatMonthOnly(event.date)}
+                      </span>
+                      <h3 class="text-lg font-light italic font-serif">
+                        {event.title}
+                      </h3>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Floating Subscribe Button -->
         <button
           id="subscribe-button"
           class="fixed bottom-8 right-8 bg-ink text-warm-white px-5 py-3 shadow-lg hover:opacity-90 transition-all duration-300 z-50 uppercase tracking-widest text-xs"
@@ -131,111 +208,9 @@ function formatMonthOnly(dateString: string): string {
           </div>
         </div>
 
-        <!-- Events by Year -->
-        {years.length > 0 ? (
-          years.map((year, index) => (
-            <section id={`year-${year}`} class={`scroll-mt-24 ${year < currentYear ? 'opacity-80' : ''}`}>
-              <h2 class="text-[10px] uppercase tracking-editorial text-zinc-300 mb-16">
-                {year === currentYear ? `${year} Highlights` : `${year} Archive`}
-              </h2>
-              <div class={year === currentYear ? 'space-y-20' : 'space-y-16'}>
-                {eventsByYear[year].map((event) => (
-                  year === currentYear ? (
-                    <!-- Current Year: Detailed Layout -->
-                    <div class="group">
-                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-2 font-sans">
-                        {formatEventDate(event.date, event.endDate)}
-                      </span>
-                      <h3 class="text-2xl font-medium text-zinc-900 mb-4 font-sans tracking-tight">
-                        {event.title}
-                      </h3>
-                      {event.description && (
-                        <p class="text-sm font-light text-zinc-600 leading-relaxed max-w-md mb-3">
-                          {event.description}
-                        </p>
-                      )}
-                      <div class="flex items-center gap-4">
-                        <span class="text-[9px] uppercase tracking-widest text-zinc-400">
-                          {event.location}
-                        </span>
-                        {event.link && (
-                          <>
-                            <span class="text-zinc-300">•</span>
-                            <a
-                              href={event.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              class="text-[9px] uppercase tracking-wider text-ink hover:opacity-70 transition-opacity inline-flex items-center gap-1"
-                            >
-                              Learn more
-                              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                              </svg>
-                            </a>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <!-- Past Years: Archive Layout -->
-                    <div class="flex flex-col gap-1">
-                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 font-sans">
-                        {formatMonthOnly(event.date)}
-                      </span>
-                      <h3 class="text-xl font-light text-zinc-800 italic font-serif">
-                        {event.title}
-                      </h3>
-                    </div>
-                  )
-                ))}
-              </div>
-            </section>
-          ))
-        ) : (
-          <div class="text-center py-32">
-            <p class="text-sm font-light text-zinc-600">
-              No events scheduled at the moment.
-            </p>
-            <p class="text-xs text-zinc-400 mt-4 uppercase tracking-widest">
-              New dates announced seasonally via Instagram
-            </p>
-          </div>
-        )}
-
-      </div>
-
-      <!-- Sidebar Navigation -->
-      <aside class="hidden md:block md:col-span-3">
-        <nav class="sticky top-24 flex flex-col items-end border-r border-zinc-200 pr-6 mr-4">
-          <div class="space-y-8 text-right">
-            {years.map((year) => (
-              <a
-                href={`#year-${year}`}
-                class="block text-[10px] uppercase tracking-[0.4em] transition-all duration-300 font-sans"
-              >
-                {year}
-              </a>
-            ))}
-            <a
-              href="#archive"
-              class="block text-[10px] uppercase tracking-[0.4em] transition-all duration-300 font-sans"
-            >
-              Archive
-            </a>
-          </div>
-        </nav>
-      </aside>
-
     </div>
   </main>
 </BaseLayout>
-
-<style>
-  /* Smooth scrolling for the anchor links */
-  html {
-    scroll-behavior: smooth;
-  }
-</style>
 
 <script>
   // Subscribe modal functionality
@@ -274,35 +249,4 @@ function formatMonthOnly(dateString: string): string {
       }
     });
   }
-
-  // Sidebar navigation active state on scroll
-  const observerOptions = {
-    root: null,
-    rootMargin: '-20% 0px -70% 0px', // Detects when section is in the top-middle of the screen
-    threshold: 0
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        // Remove active class from all links
-        document.querySelectorAll('nav a').forEach(link => {
-          link.classList.remove('text-zinc-900', 'font-medium');
-          link.classList.add('text-zinc-400');
-        });
-        // Add active class to the current link
-        const activeLink = document.querySelector(`nav a[href="#${id}"]`);
-        if (activeLink) {
-          activeLink.classList.remove('text-zinc-400');
-          activeLink.classList.add('text-zinc-900', 'font-medium');
-        }
-      }
-    });
-  }, observerOptions);
-
-  // Observe all sections that have an ID starting with 'year-'
-  document.querySelectorAll('section[id^="year-"]').forEach(section => {
-    observer.observe(section);
-  });
 </script>
