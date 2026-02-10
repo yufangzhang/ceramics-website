@@ -6,6 +6,14 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'homeIntro',
+      title: 'Home Page Introduction',
+      type: 'text',
+      rows: 3,
+      description: 'Brief introduction text shown on the home page',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'aboutMe',
       title: 'About Me',
       type: 'text',

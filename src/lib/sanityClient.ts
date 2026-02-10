@@ -86,6 +86,7 @@ export interface Event {
 
 export interface Profile {
   _id: string;
+  homeIntro: string;
   aboutMe: string;
   profileImage: {
     asset: {

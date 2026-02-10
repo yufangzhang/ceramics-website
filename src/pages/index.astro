@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { sanityClient, type Work } from '../lib/sanityClient';
+import { sanityClient, type Work, type Profile } from '../lib/sanityClient';
 
 const works = await sanityClient.fetch<Work[]>(
   `*[_type == "work" && featured == true] | order(homeOrder asc, year desc) {
@@ -18,20 +18,33 @@ const works = await sanityClient.fetch<Work[]>(
     homeOrder
   }`
 );
+
+const profile = await sanityClient.fetch<Profile>(
+  `*[_type == "profile" && _id == "profile"][0] {
+    _id,
+    homeIntro
+  }`
+);
 ---
 
 <BaseLayout title="Yufang Zhang Ceramics - Handcrafted Pottery">
   <!-- Hero Section -->
-  <section class="text-center py-20 md:py-32 max-w-4xl mx-auto">
-    <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
-      Chiswick-based ceramicist making small-batch, wheel-thrown pottery for everyday use.
-      Influenced by Chinese and Japanese traditions, my work focuses on functional, classical
-      forms with hand-painted oxide decoration.
-    </p>
+  <section class="text-center py-12 max-w-4xl mx-auto">
+    {profile?.homeIntro ? (
+      <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
+        {profile.homeIntro}
+      </p>
+    ) : (
+      <p class="text-base md:text-lg text-clay-muted leading-relaxed tracking-wide font-light">
+        Chiswick-based ceramicist making small-batch, wheel-thrown pottery for everyday use.
+        Influenced by Chinese and Japanese traditions, my work focuses on functional, classical
+        forms with hand-painted oxide decoration.
+      </p>
+    )}
   </section>
 
   <!-- Gallery Grid -->
-  <section class="py-24">
+  <section class="py-12">
     {works.length === 0 ? (
       <div class="text-center py-32">
         <p class="text-clay-muted text-lg tracking-wide font-light">
@@ -39,11 +52,9 @@ const works = await sanityClient.fetch<Work[]>(
         </p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-32">
-        {works.map((work, index) => (
-          <div class={index % 2 !== 0 ? "md:mt-40" : ""}>
-            <ProjectCard work={work} />
-          </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+        {works.map((work) => (
+          <ProjectCard work={work} />
         ))}
       </div>
     )}

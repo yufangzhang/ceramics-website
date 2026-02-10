@@ -37,11 +37,9 @@ const works = await sanityClient.fetch<Work[]>(
         </p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-32">
-        {works.map((work, index) => (
-          <div class={index % 2 !== 0 ? "md:mt-40" : ""}>
-            <ProjectCard work={work} />
-          </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+        {works.map((work) => (
+          <ProjectCard work={work} />
         ))}
       </div>
     )}

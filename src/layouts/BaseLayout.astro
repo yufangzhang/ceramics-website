@@ -54,65 +54,67 @@ const link = (path: string) => {
     </style>
   </head>
   <body class="min-h-screen bg-warm-white text-stone-grey font-sans antialiased">
-    <!-- Centered minimalist navigation -->
-    <nav class="w-full py-16 px-8 flex flex-col items-center bg-warm-white sticky top-0 z-50">
-      <div class="mb-10 text-center">
-        <a href={link('/')} class="group">
-          <h1 class="text-4xl font-serif italic text-zinc-900 tracking-tight transition-colors group-hover:text-zinc-500">
+    <!-- Horizontal minimalist navigation -->
+    <nav class="w-full py-8 px-8 bg-warm-white sticky top-0 z-50 border-b border-zinc-100">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <!-- Brand name on left -->
+        <a href={link('/')} class="group flex flex-col">
+          <h1 class="text-3xl font-serif italic text-zinc-900 tracking-tight transition-colors group-hover:text-zinc-500">
             Yufang Zhang
           </h1>
-          <p class="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-2">
+          <p class="text-[9px] uppercase tracking-[0.4em] text-zinc-400 mt-1">
             Ceramic Artist
           </p>
         </a>
-      </div>
 
-      <div class="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 border-t border-zinc-100 pt-8">
-        <a
-          href={link('/')}
-          class:list={[
-            "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-            (currentPath === baseUrl || currentPath === `${baseUrl}/`) ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
-          ]}
-        >
-          Home
-        </a>
-        <a
-          href={link('/gallery/')}
-          class:list={[
-            "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-            currentPath.includes("/gallery") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
-          ]}
-        >
-          Gallery
-        </a>
-        <a
-          href={link('/events/')}
-          class:list={[
-            "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-            currentPath.includes("/events") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
-          ]}
-        >
-          Events
-        </a>
-        <a
-          href={link('/about/')}
-          class:list={[
-            "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-            currentPath.includes("/about") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
-          ]}
-        >
-          About
-        </a>
-        <a
-          href={link('/contact/')}
-          class:list={[
-            "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-            currentPath.includes("/contact") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
-          ]}
-        >
-          Contact
-        </a>
+        <!-- Navigation links on right -->
+        <div class="flex items-center gap-x-8">
+          <a
+            href={link('/')}
+            class:list={[
+              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              (currentPath === baseUrl || currentPath === `${baseUrl}/`) ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+            ]}
+          >
+            Home
+          </a>
+          <a
+            href={link('/gallery/')}
+            class:list={[
+              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              currentPath.includes("/gallery") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+            ]}
+          >
+            Gallery
+          </a>
+          <a
+            href={link('/events/')}
+            class:list={[
+              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              currentPath.includes("/events") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+            ]}
+          >
+            Events
+          </a>
+          <a
+            href={link('/about/')}
+            class:list={[
+              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              currentPath.includes("/about") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+            ]}
+          >
+            About
+          </a>
+          <a
+            href={link('/contact/')}
+            class:list={[
+              "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
+              currentPath.includes("/contact") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+            ]}
+          >
+            Contact
+          </a>
+        </div>
       </div>
     </nav>
 
