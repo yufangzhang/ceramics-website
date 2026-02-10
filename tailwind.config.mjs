@@ -9,9 +9,11 @@ export default {
       },
       colors: {
         'warm-white': '#FAF9F6', // The "Paper" background
+        'bg-gallery': '#FAF9F6', // Same as warm-white, for clarity
         'gallery-white': '#FAF9F6',
-        'stone-grey': '#2D2D2D',
-        'clay-muted': '#A3A3A3',
+        'ink': '#1A1A1A', // Charcoal instead of pure black
+        'stone-grey': '#1A1A1A', // Using ink color
+        'clay-muted': '#71717A', // Updated muted color
         clay: {
           50: '#faf8f5',
           100: '#f2ede4',

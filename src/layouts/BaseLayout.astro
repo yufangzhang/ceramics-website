@@ -40,6 +40,14 @@ const profile = await sanityClient.fetch<Profile>(
       import '../lib/sentry';
     </script>
     <style is:global>
+      /* Global CSS Health Fixes */
+      html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #FAF9F6; /* Set the global paper color */
+        color: #1A1A1A; /* Set the ink color */
+      }
+
       /* Typography */
       h1, h2, h3, h4, .font-serif {
         font-family: "Cormorant Garamond", serif;
@@ -51,6 +59,7 @@ const profile = await sanityClient.fetch<Profile>(
         text-transform: uppercase;
         letter-spacing: 0.2em;
         font-size: 0.7rem;
+        font-weight: 300; /* Lighter weight for minimalist vibe */
       }
 
       /* Subtle image fade-in */
@@ -67,18 +76,18 @@ const profile = await sanityClient.fetch<Profile>(
         <!-- Brand name/logo on left -->
         <a href={link('/')} class="group">
           <div class="flex items-start gap-3">
-            <h1 class="text-3xl font-serif italic text-zinc-900 tracking-tight transition-colors group-hover:text-zinc-500">
+            <h1 class="text-3xl font-serif italic text-ink tracking-tight transition-colors group-hover:opacity-70">
               Yufang Zhang
             </h1>
             {profile?.logo?.asset && (
               <img
                 src={urlFor(profile.logo).width(200).format('webp').quality(90).url()}
                 alt="Logo"
-                class="h-9 w-auto"
+                class="h-9 w-auto opacity-90"
               />
             )}
           </div>
-          <p class="text-[9px] uppercase tracking-[0.4em] text-zinc-400 mt-1">
+          <p class="text-[9px] uppercase tracking-[0.4em] text-clay-muted mt-1">
             Ceramic Artist
           </p>
         </a>
@@ -89,7 +98,7 @@ const profile = await sanityClient.fetch<Profile>(
             href={link('/')}
             class:list={[
               "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-              (currentPath === baseUrl || currentPath === `${baseUrl}/`) ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+              (currentPath === baseUrl || currentPath === `${baseUrl}/`) ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
             Home
@@ -98,7 +107,7 @@ const profile = await sanityClient.fetch<Profile>(
             href={link('/gallery/')}
             class:list={[
               "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-              currentPath.includes("/gallery") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+              currentPath.includes("/gallery") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
             Gallery
@@ -107,7 +116,7 @@ const profile = await sanityClient.fetch<Profile>(
             href={link('/events/')}
             class:list={[
               "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-              currentPath.includes("/events") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+              currentPath.includes("/events") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
             Events
@@ -116,7 +125,7 @@ const profile = await sanityClient.fetch<Profile>(
             href={link('/about/')}
             class:list={[
               "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-              currentPath.includes("/about") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+              currentPath.includes("/about") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
             About
@@ -125,7 +134,7 @@ const profile = await sanityClient.fetch<Profile>(
             href={link('/contact/')}
             class:list={[
               "text-[11px] uppercase tracking-[0.25em] transition-all duration-500 ease-out hover:tracking-[0.35em]",
-              currentPath.includes("/contact") ? "text-zinc-900 border-b border-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+              currentPath.includes("/contact") ? "text-ink border-b border-ink" : "text-clay-muted hover:text-ink"
             ]}
           >
             Contact
