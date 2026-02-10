@@ -32,7 +32,7 @@ const profile = await sanityClient.fetch<Profile>(
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
@@ -76,7 +76,7 @@ const profile = await sanityClient.fetch<Profile>(
         <!-- Brand name/logo on left -->
         <a href={link('/')} class="group">
           <div class="flex items-start gap-3">
-            <h1 class="text-3xl font-serif italic text-ink tracking-tight transition-colors group-hover:opacity-70">
+            <h1 class="text-3xl font-serif font-light italic text-ink tracking-tight transition-colors group-hover:opacity-70">
               Yufang Zhang
             </h1>
             {profile?.logo?.asset && (
