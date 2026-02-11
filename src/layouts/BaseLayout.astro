@@ -126,8 +126,8 @@ const faviconUrl = profile?.favicon?.asset
     <nav class="w-full py-8 px-8 sticky top-0 z-50 backdrop-blur-sm bg-opacity-100" style="background-color: var(--color-bg);">
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <!-- Brand name/logo on left -->
-        <a href={link('/')} class="group flex-shrink-0">
-          <div class="flex items-start gap-[1.1rem]">
+        <a href={link('/')} class="group flex-shrink-0 mr-4">
+          <div class="flex items-start gap-2 md:gap-[1.1rem]">
             {profile?.logo?.asset && (
               <img
                 src={urlFor(profile.logo).width(200).format('webp').quality(90).url()}
@@ -136,10 +136,10 @@ const faviconUrl = profile?.favicon?.asset
               />
             )}
             <div>
-              <h1 style="font-size: 24px; color: #45413E; letter-spacing: 0.22em;" class="font-medium uppercase font-sans leading-tight transition-colors group-hover:opacity-70">
+              <h1 class="font-medium uppercase font-sans leading-tight transition-colors group-hover:opacity-70" style="font-size: 24px; color: #45413E; letter-spacing: 0.22em;">
                 Yufang Zhang
               </h1>
-              <p class="text-[10px] uppercase tracking-museum mt-4" style="color: var(--color-text-muted);">
+              <p class="text-[10px] uppercase tracking-museum mt-2 md:mt-4" style="color: var(--color-text-muted);">
                 Ceramic Artist
               </p>
             </div>
