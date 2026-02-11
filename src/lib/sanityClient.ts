@@ -118,7 +118,8 @@ export interface Profile {
       _ref: string;
     };
   };
-  homeIntro: string;
+  homeIntroHeading?: string;
+  homeIntroBody?: string;
   aboutMe: string;
   profileImage: {
     asset: {

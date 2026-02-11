@@ -18,24 +18,30 @@ const works = await sanityClient.fetch<HomeShowcase[]>(
 const profile = await sanityClient.fetch<Profile>(
   `*[_type == "profile" && _id == "profile"][0] {
     _id,
-    homeIntro
+    homeIntroHeading,
+    homeIntroBody
   }`
 );
 ---
 
 <BaseLayout title="Yufang Zhang Ceramics">
   <!-- Hero Section -->
-  <section class="text-center pt-6 pb-12 max-w-4xl mx-auto">
-    {profile?.homeIntro ? (
-      <p class="text-base md:text-lg leading-relaxed tracking-wide font-light" style="color: var(--color-text-muted);">
-        {profile.homeIntro}
-      </p>
-    ) : (
-      <div class="space-y-4">
-        <p class="text-base md:text-lg leading-relaxed tracking-wide font-light" style="color: var(--color-text-muted);">
-          Functional forms inspired by Eastern minimalism.
+  <section class="text-center pt-6 pb-12">
+    {profile?.homeIntroHeading && profile?.homeIntroBody ? (
+      <div class="max-w-xl mx-auto">
+        <h2 class="text-xl font-medium text-[#45413E] mb-4">
+          {profile.homeIntroHeading}
+        </h2>
+        <p class="text-base font-light text-[#918C86] leading-relaxed">
+          {profile.homeIntroBody}
         </p>
-        <p class="text-base md:text-lg leading-relaxed tracking-wide font-light" style="color: var(--color-text-muted);">
+      </div>
+    ) : (
+      <div class="max-w-xl mx-auto">
+        <h2 class="text-xl font-medium text-[#45413E] mb-4">
+          Functional forms inspired by Eastern minimalism.
+        </h2>
+        <p class="text-base font-light text-[#918C86] leading-relaxed">
           Hand-painted and wheel-thrown in Chiswick, my work explores the intersection of classical tradition and the quiet rituals of daily life.
         </p>
       </div>
@@ -46,7 +52,7 @@ const profile = await sanityClient.fetch<Profile>(
   <section class="py-20">
     {works.length === 0 ? (
       <div class="text-center py-32">
-        <p class="text-clay-muted text-lg tracking-wide font-light">
+        <p class="text-lg font-light" style="color: var(--color-text-muted); letter-spacing: 0.01em;">
           No showcase items yet. Add some in the Sanity Studio under "Home Showcase"!
         </p>
       </div>

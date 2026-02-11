@@ -24,11 +24,18 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'homeIntro',
-      title: 'Home Page Introduction',
+      name: 'homeIntroHeading',
+      title: 'Home Intro - Heading',
+      type: 'string',
+      description: 'Lead-in heading for home page (e.g., "Functional forms inspired by Eastern minimalism.")',
+      validation: (Rule) => Rule.required().max(150),
+    }),
+    defineField({
+      name: 'homeIntroBody',
+      title: 'Home Intro - Body',
       type: 'text',
       rows: 3,
-      description: 'Brief introduction text shown on the home page',
+      description: 'Supporting paragraph for home page intro (e.g., "Hand-painted and wheel-thrown in Chiswick...")',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

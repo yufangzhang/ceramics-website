@@ -16,10 +16,12 @@ const link = (path: string) => {
   return `${baseUrl}${path}`;
 };
 
-// Fetch profile for logo and favicon
+// Fetch profile for logo, favicon, and newsletter
 const profile = await sanityClient.fetch<Profile>(
-  "*[_type == 'profile' && _id == 'profile'][0] { _id, logo, favicon }"
+  "*[_type == 'profile' && _id == 'profile'][0] { _id, logo, favicon, buttondownUsername }"
 );
+
+const buttondownUsername = profile?.buttondownUsername || 'YOUR_USERNAME_HERE';
 
 // Generate favicon URL - use custom favicon if provided, otherwise use logo
 const faviconUrl = profile?.favicon?.asset
@@ -133,7 +135,7 @@ const faviconUrl = profile?.favicon?.asset
               />
             )}
             <div>
-              <h1 style="font-size: 27.5px; color: var(--color-text-main);" class="font-medium uppercase tracking-gallery font-sans leading-tight transition-colors group-hover:opacity-70">
+              <h1 style="font-size: 25px; color: var(--color-text-main); letter-spacing: 0.22em;" class="font-medium uppercase font-sans leading-tight transition-colors group-hover:opacity-70">
                 Yufang Zhang
               </h1>
               <p class="text-[10px] uppercase tracking-museum mt-4" style="color: var(--color-text-muted);">
@@ -254,9 +256,33 @@ const faviconUrl = profile?.favicon?.asset
       <slot />
     </main>
 
-    <footer class="mt-32 py-16">
-      <div class="container mx-auto px-6 lg:px-12 text-center text-clay-muted text-xs tracking-widest uppercase">
-        <p>&copy; {new Date().getFullYear()} Yufang Zhang Ceramics. All rights reserved.</p>
+    <!-- Global Newsletter Footer -->
+    <footer class="mt-32 pt-16 pb-24" style="border-top: 1px solid var(--color-line);">
+      <div class="flex flex-col items-center text-center">
+        <h3 class="text-[10px] uppercase tracking-[0.4em] mb-6" style="color: var(--color-text-main);">
+          Studio Updates
+        </h3>
+        <p class="text-sm font-light mb-8 max-w-md" style="color: var(--color-text-muted);">
+          Receive occasional notes on new collections and events.
+        </p>
+        <form
+          action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUsername}`}
+          method="post"
+          referrerpolicy="unsafe-url"
+          class="flex flex-col md:flex-row gap-4 w-full max-w-sm"
+        >
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            required
+            class="bg-transparent border-b py-2 text-sm outline-none transition-colors flex-grow"
+            style="border-color: var(--color-line); color: var(--color-text-main);"
+            onfocus="this.style.borderColor='var(--color-text-main)';"
+            onblur="this.style.borderColor='var(--color-line)';"
+          />
+          <button type="submit" class="btn-zen whitespace-nowrap">Join</button>
+        </form>
       </div>
     </footer>
 
