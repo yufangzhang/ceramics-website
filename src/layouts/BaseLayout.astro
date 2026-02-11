@@ -123,23 +123,23 @@ const faviconUrl = profile?.favicon?.asset
   </head>
   <body class="min-h-screen bg-[var(--color-bg)] font-sans antialiased" style="color: var(--color-text-main);">
     <!-- Horizontal minimalist navigation -->
-    <nav class="w-full py-8 px-8 sticky top-0 z-50 backdrop-blur-sm bg-opacity-100" style="background-color: var(--color-bg);">
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <nav class="w-full py-8 px-4 md:px-8 sticky top-0 z-50 backdrop-blur-sm bg-opacity-100" style="background-color: var(--color-bg);">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <!-- Brand name/logo on left -->
-        <a href={link('/')} class="group flex-shrink-0 mr-8">
-          <div class="flex items-start gap-2 md:gap-[1.1rem]">
+        <a href={link('/')} class="group flex-shrink min-w-0 mr-auto">
+          <div class="flex items-start gap-1.5 md:gap-[1.1rem]">
             {profile?.logo?.asset && (
               <img
                 src={urlFor(profile.logo).width(200).format('webp').quality(90).url()}
                 alt="Logo"
-                class="h-12 w-auto opacity-40 -mt-2"
+                class="h-8 md:h-12 w-auto opacity-40 -mt-1 md:-mt-2 flex-shrink-0"
               />
             )}
-            <div>
-              <h1 class="font-medium uppercase font-sans leading-tight transition-colors group-hover:opacity-70" style="font-size: 24px; color: #45413E; letter-spacing: 0.22em;">
+            <div class="min-w-0">
+              <h1 class="font-medium uppercase font-sans leading-tight transition-colors group-hover:opacity-70" style="font-size: 24px; color: #45413E; letter-spacing: 0.15em;">
                 Yufang Zhang
               </h1>
-              <p class="text-[10px] uppercase tracking-museum mt-2 md:mt-4" style="color: var(--color-text-muted);">
+              <p class="text-[9px] md:text-[10px] uppercase tracking-museum mt-2 md:mt-4" style="color: var(--color-text-muted);">
                 Ceramic Artist
               </p>
             </div>
@@ -149,7 +149,7 @@ const faviconUrl = profile?.favicon?.asset
         <!-- Mobile menu button -->
         <button
           id="mobile-menu-button"
-          class="md:hidden p-2 flex-shrink-0"
+          class="md:hidden p-2 flex-shrink-0 ml-auto"
           style="color: var(--color-text-main);"
           aria-label="Toggle menu"
         >
