@@ -29,19 +29,19 @@ const profile = await sanityClient.fetch<Profile>(
   <section class="text-center pt-6 pb-12">
     {profile?.homeIntroHeading && profile?.homeIntroBody ? (
       <div class="max-w-xl mx-auto">
-        <h2 class="text-xl font-medium text-[#45413E] mb-4">
+        <h2 class="text-xl font-medium text-[#45413E] tracking-wide mb-4">
           {profile.homeIntroHeading}
         </h2>
-        <p class="text-base font-light text-[#918C86] leading-relaxed">
+        <p class="text-base font-light text-[#918C86] leading-relaxed tracking-wide">
           {profile.homeIntroBody}
         </p>
       </div>
     ) : (
       <div class="max-w-xl mx-auto">
-        <h2 class="text-xl font-medium text-[#45413E] mb-4">
+        <h2 class="text-xl font-medium text-[#45413E] tracking-wide mb-4">
           Functional forms inspired by Eastern minimalism.
         </h2>
-        <p class="text-base font-light text-[#918C86] leading-relaxed">
+        <p class="text-base font-light text-[#918C86] leading-relaxed tracking-wide">
           Hand-painted and wheel-thrown in Chiswick, my work explores the intersection of classical tradition and the quiet rituals of daily life.
         </p>
       </div>

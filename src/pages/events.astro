@@ -80,28 +80,28 @@ function formatMonthOnly(dateString: string): string {
         {years.length > 0 && eventsByYear[currentYear]?.length > 0 ? (
           <div class="space-y-16">
             {eventsByYear[currentYear].map((event) => (
-              <article class="group">
-                <div class="flex flex-col space-y-2">
-                  <span class="text-[10px] tracking-[0.3em] uppercase font-sans font-medium date-label" style="color: var(--color-text-muted);">
+              <article>
+                <div class="flex flex-col mb-20">
+                  <span class="text-[10px] tracking-[0.3em] text-[#918C86] uppercase font-light mb-3">
                     {formatEventDate(event.date, event.endDate)}, {currentYear}
                   </span>
 
-                  <h2 class="text-2xl font-sans tracking-tight font-medium" style="color: var(--color-text-main);">
+                  <h2 class="text-[22px] font-medium text-[#45413E] tracking-tight mb-4">
                     {event.title}
                   </h2>
 
                   {event.description && (
-                    <p class="text-[15px] font-light leading-relaxed max-w-md" style="color: var(--color-text-main); opacity: 0.8;">
+                    <p class="text-sm font-light text-[#71717A] leading-relaxed max-w-md mb-4">
                       {event.description}
                     </p>
                   )}
 
-                  <div class="flex items-center gap-2 pt-2">
+                  <div class="flex items-center gap-2">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" style="color: var(--color-line);">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
-                    <span class="text-[10px] tracking-widest italic location-label" style="color: var(--color-text-muted);">
+                    <span class="text-[10px] tracking-[0.15em] text-[#918C86] italic">
                       {event.location}
                     </span>
                   </div>
