@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#F5F2ED] text-[#45413E];
+  }
+
+  /* Soften all headings by default */
+  h1, h2, h3 {
+    @apply font-normal tracking-tight;
+    color: #45413E;
+  }
+}
