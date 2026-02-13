@@ -7,9 +7,21 @@ A modern, high-performance pottery portfolio website built with Astro and Sanity
 - **Frontend**: Astro 4.x with Tailwind CSS
 - **CMS**: Sanity.io (Headless CMS)
 - **Hosting**: GitHub Pages (Static Site Generation)
-- **Forms**: Formspree/Getform integration
+- **Forms**: Formspree
 - **Error Tracking**: Sentry
+- **Analytics**: Cloudflare Web Analytics
+- **Newsletter**: Buttondown
 - **Language**: TypeScript
+
+## Third-Party Service Portals
+
+| Service | Purpose | Dashboard |
+|---------|---------|-----------|
+| **Sanity.io** | Content management | https://sanity.io/manage |
+| **Formspree** | Contact forms | https://formspree.io/forms |
+| **Sentry** | Error monitoring | https://sentry.io |
+| **Cloudflare** | Domain & analytics | https://dash.cloudflare.com |
+| **Buttondown** | Newsletter | https://buttondown.email |
 
 ## Features
 
