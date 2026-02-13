@@ -10,8 +10,10 @@ export default defineConfig({
     tailwind(),
     sentry({
       dsn: process.env.PUBLIC_SENTRY_DSN,
+      environment: process.env.NODE_ENV || 'production',
+      release: process.env.GITHUB_SHA || 'dev',
       sourceMapsUploadOptions: {
-        enabled: false, // Enable in production
+        enabled: false, // Enable when you need source maps
       },
       replaysSessionSampleRate: 0.1,
       replaysOnErrorSampleRate: 1.0,
