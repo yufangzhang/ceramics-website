@@ -40,8 +40,40 @@ export default defineConfig({
               .child(S.documentTypeList('work').title('Selected Works')),
             S.listItem()
               .title('Events')
-              .schemaType('event')
-              .child(S.documentTypeList('event').title('Events')),
+              .child(
+                S.list()
+                  .title('Events')
+                  .items([
+                    S.listItem()
+                      .title('Upcoming Events')
+                      .schemaType('event')
+                      .child(
+                        S.documentList()
+                          .title('Upcoming Events')
+                          .filter('_type == "event" && isPast != true && date >= now()')
+                          .defaultOrdering([{field: 'date', direction: 'asc'}])
+                      ),
+                    S.listItem()
+                      .title('Past Events')
+                      .schemaType('event')
+                      .child(
+                        S.documentList()
+                          .title('Past Events')
+                          .filter('_type == "event" && (isPast == true || date < now())')
+                          .defaultOrdering([{field: 'date', direction: 'desc'}])
+                      ),
+                    S.divider(),
+                    S.listItem()
+                      .title('All Events')
+                      .schemaType('event')
+                      .child(
+                        S.documentList()
+                          .title('All Events')
+                          .filter('_type == "event"')
+                          .defaultOrdering([{field: 'date', direction: 'desc'}])
+                      ),
+                  ])
+              ),
           ]),
     }),
     visionTool(),

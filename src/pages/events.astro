@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { sanityClient, type Event, type Profile } from '../lib/sanityClient';
+import { groupEvents } from '../lib/eventUtils';
 
 const events = await sanityClient.fetch<Event[]>(
   `*[_type == "event"] | order(date asc) {
@@ -23,21 +24,7 @@ const profile = await sanityClient.fetch<Profile>(
 const buttondownUsername = profile?.buttondownUsername || 'YOUR_USERNAME_HERE';
 
 const now = new Date();
-const currentYear = now.getFullYear();
-
-// Group events by year
-const eventsByYear: Record<number, Event[]> = {};
-events.forEach(event => {
-  const eventDate = new Date(event.date);
-  const year = eventDate.getFullYear();
-  if (!eventsByYear[year]) {
-    eventsByYear[year] = [];
-  }
-  eventsByYear[year].push(event);
-});
-
-// Get sorted years (newest first)
-const years = Object.keys(eventsByYear).map(Number).sort((a, b) => b - a);
+const { upcoming, past, pastYears } = groupEvents(events, now);
 
 function formatEventDate(dateString: string, endDateString?: string): string {
   const date = new Date(dateString);
@@ -77,13 +64,13 @@ function formatMonthOnly(dateString: string): string {
           <div class="h-[1px] flex-grow" style="background-color: var(--color-line);"></div>
         </div>
 
-        {years.length > 0 && eventsByYear[currentYear]?.length > 0 ? (
+        {upcoming.length > 0 ? (
           <div class="space-y-16">
-            {eventsByYear[currentYear].map((event) => (
+            {upcoming.map((event) => (
               <article>
                 <div class="flex flex-col mb-20">
                   <span class="text-[10px] tracking-[0.3em] text-[#918C86] uppercase font-light mb-3">
-                    {formatEventDate(event.date, event.endDate)}, {currentYear}
+                    {formatEventDate(event.date, event.endDate)}, {new Date(event.date).getFullYear()}
                   </span>
 
                   <h2 class="text-[22px] font-medium text-[#45413E] tracking-tight mb-4">
@@ -131,21 +118,21 @@ function formatMonthOnly(dateString: string): string {
       </section>
 
       <!-- Archive Section -->
-      {years.filter(year => year < currentYear).length > 0 && (
+      {pastYears.length > 0 && (
         <section class="relative ml-1" style="border-left: 1px solid var(--color-line);">
           <div class="absolute left-[-1px] top-[-30px] pl-8">
             <h2 class="text-[10px] uppercase tracking-[0.4em]" style="color: var(--color-text-muted);">Archive</h2>
           </div>
 
           <div class="space-y-24 pt-4">
-            {years.filter(year => year < currentYear).map((year) => (
+            {pastYears.map((year) => (
               <div class="relative pl-12 md:pl-20" id={`year-${year}`}>
                 <span class="absolute left-[-1px] top-0 -translate-x-1/2 py-1 text-[10px] font-medium tracking-[0.3em] uppercase" style="background-color: var(--color-bg); color: var(--color-text-muted);">
                   {year}
                 </span>
 
                 <div class="space-y-12">
-                  {eventsByYear[year].map((event) => (
+                  {past[year].map((event) => (
                     <article class="opacity-70 hover:opacity-100 transition-opacity">
                       <span class="text-[10px] uppercase tracking-widest font-sans block mb-1" style="color: var(--color-text-muted);">
                         {formatMonthOnly(event.date)}

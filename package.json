@@ -25,6 +25,7 @@
   "devDependencies": {
     "@sanity/vision": "^3.30.0",
     "sanity": "^3.30.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^4.1.3"
   }
 }
