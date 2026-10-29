@@ -8,7 +8,8 @@ const baseClient = createClient({
   projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
   dataset: import.meta.env.PUBLIC_SANITY_DATASET,
   apiVersion: import.meta.env.PUBLIC_SANITY_API_VERSION,
-  useCdn: true,
+  // The site is static, so Sanity is only queried at build time; the CDN can bake stale content into a deploy.
+  useCdn: false,
 });
 
 // Wrap fetch with Sentry breadcrumbs for monitoring
