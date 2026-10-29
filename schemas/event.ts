@@ -1,4 +1,14 @@
-import {defineField, defineType} from 'sanity'
+import {defineField, defineType, defineArrayMember} from 'sanity'
+
+const UK_FORMAT: Intl.DateTimeFormatOptions = {
+  timeZone: 'Europe/London',
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+}
 
 export default defineType({
   name: 'event',
@@ -12,16 +22,43 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'date',
-      title: 'Start Date',
-      type: 'datetime',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'endDate',
-      title: 'End Date',
-      type: 'datetime',
-      description: 'Optional end date for multi-day events',
+      name: 'sessions',
+      title: 'Sessions',
+      description:
+        'One or more sessions. Each session has a start and optional end. All times are interpreted as UK time (Europe/London) on the public site.',
+      type: 'array',
+      validation: (Rule) => Rule.required().min(1),
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'session',
+          title: 'Session',
+          fields: [
+            defineField({
+              name: 'start',
+              title: 'Start',
+              type: 'datetime',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'end',
+              title: 'End',
+              type: 'datetime',
+              description: 'Optional end time for this session',
+            }),
+          ],
+          preview: {
+            select: {start: 'start', end: 'end'},
+            prepare({start, end}) {
+              if (!start) return {title: 'No start time'}
+              const startStr = new Intl.DateTimeFormat('en-GB', UK_FORMAT).format(new Date(start))
+              if (!end) return {title: startStr}
+              const endStr = new Intl.DateTimeFormat('en-GB', UK_FORMAT).format(new Date(end))
+              return {title: `${startStr} — ${endStr}`}
+            },
+          },
+        }),
+      ],
     }),
     defineField({
       name: 'location',
@@ -52,12 +89,14 @@ export default defineType({
   preview: {
     select: {
       title: 'title',
-      date: 'date',
+      firstStart: 'sessions.0.start',
       location: 'location',
     },
     prepare(selection) {
-      const {title, date, location} = selection
-      const dateStr = date ? new Date(date).toLocaleDateString() : 'No date'
+      const {title, firstStart, location} = selection
+      const dateStr = firstStart
+        ? new Intl.DateTimeFormat('en-GB', UK_FORMAT).format(new Date(firstStart))
+        : 'No date'
       return {
         title: title,
         subtitle: `${dateStr} • ${location}`,
@@ -66,14 +105,14 @@ export default defineType({
   },
   orderings: [
     {
-      title: 'Date, Newest',
-      name: 'dateDesc',
-      by: [{field: 'date', direction: 'desc'}],
+      title: 'First session, newest',
+      name: 'firstSessionDesc',
+      by: [{field: 'sessions.0.start', direction: 'desc'}],
     },
     {
-      title: 'Date, Oldest',
-      name: 'dateAsc',
-      by: [{field: 'date', direction: 'asc'}],
+      title: 'First session, oldest',
+      name: 'firstSessionAsc',
+      by: [{field: 'sessions.0.start', direction: 'asc'}],
     },
   ],
 })

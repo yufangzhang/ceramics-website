@@ -1,19 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { sanityClient, type Event, type Profile } from '../lib/sanityClient';
-import { groupEvents } from '../lib/eventUtils';
+import { sanityClient, EVENT_FIELDS, type Event, type Profile } from '../lib/sanityClient';
+import { groupEvents, formatSession, formatMonthForEvent, formatYearForEvent } from '../lib/eventUtils';
 
 const events = await sanityClient.fetch<Event[]>(
-  `*[_type == "event"] | order(date asc) {
-    _id,
-    title,
-    date,
-    endDate,
-    location,
-    description,
-    link,
-    isPast
-  }`
+  `*[_type == "event"] | order(coalesce(sessions[0].start, date) asc) { ${EVENT_FIELDS} }`
 );
 
 // Fetch profile for Buttondown username
@@ -25,32 +16,6 @@ const buttondownUsername = profile?.buttondownUsername || 'YOUR_USERNAME_HERE';
 
 const now = new Date();
 const { upcoming, past, pastYears } = groupEvents(events, now);
-
-function formatEventDate(dateString: string, endDateString?: string): string {
-  const date = new Date(dateString);
-  const month = date.toLocaleDateString('en-US', { month: 'long' });
-  const day = date.getDate();
-  const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-
-  if (endDateString) {
-    const endDate = new Date(endDateString);
-    const endDay = endDate.getDate();
-    const endTime = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-
-    // Check if it's the same day
-    if (date.toDateString() === endDate.toDateString()) {
-      return `${month} ${day} • ${time} — ${endTime}`;
-    }
-    return `${month} ${day} — ${endDay} • ${time} — ${endTime}`;
-  }
-
-  return `${month} ${day} • ${time}`;
-}
-
-function formatMonthOnly(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { month: 'long' });
-}
 ---
 
 <BaseLayout title="Events - Yufang Zhang Ceramics" description="Upcoming pottery workshops, exhibitions, and events">
@@ -69,9 +34,17 @@ function formatMonthOnly(dateString: string): string {
             {upcoming.map((event) => (
               <article>
                 <div class="flex flex-col mb-20">
-                  <span class="text-[10px] tracking-[0.3em] text-[#918C86] uppercase font-light mb-3">
-                    {formatEventDate(event.date, event.endDate)}, {new Date(event.date).getFullYear()}
-                  </span>
+                  <div class="flex flex-col gap-1 mb-3">
+                    {event.sessions.map((session) => (
+                      <span
+                        class="event-time text-[10px] tracking-[0.3em] text-[#918C86] uppercase font-light"
+                        data-start={session.start}
+                        data-end={session.end ?? ''}
+                      >
+                        <span class="event-time-uk">{formatSession(session)}, {formatYearForEvent(event)}</span>
+                      </span>
+                    ))}
+                  </div>
 
                   <h2 class="text-[22px] font-medium text-[#45413E] tracking-tight mb-4">
                     {event.title}
@@ -135,7 +108,7 @@ function formatMonthOnly(dateString: string): string {
                   {past[year].map((event) => (
                     <article class="opacity-70 hover:opacity-100 transition-opacity">
                       <span class="text-[10px] uppercase tracking-widest font-sans block mb-1" style="color: var(--color-text-muted);">
-                        {formatMonthOnly(event.date)}
+                        {formatMonthForEvent(event)}
                       </span>
                       <h3 class="text-lg font-light italic font-serif" style="color: var(--color-text-muted);">
                         {event.title}
@@ -151,4 +124,50 @@ function formatMonthOnly(dateString: string): string {
 
     </div>
   </main>
+
+  <script is:inline>
+    (function () {
+      const UK_TZ = 'Europe/London';
+      const visitorTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (!visitorTz || visitorTz === UK_TZ) return;
+
+      const timeFmt = new Intl.DateTimeFormat('en-GB', {
+        timeZone: visitorTz,
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+      const tzFmt = new Intl.DateTimeFormat('en-GB', {
+        timeZone: visitorTz,
+        timeZoneName: 'short',
+      });
+
+      function abbrev(date) {
+        for (const part of tzFmt.formatToParts(date)) {
+          if (part.type === 'timeZoneName') return part.value;
+        }
+        return '';
+      }
+
+      function formatLocal(startIso, endIso) {
+        const start = new Date(startIso);
+        const startStr = timeFmt.format(start);
+        const tz = abbrev(start);
+        if (!endIso) return `${startStr} ${tz}`;
+        const end = new Date(endIso);
+        const endStr = timeFmt.format(end);
+        return `${startStr} — ${endStr} ${tz}`;
+      }
+
+      document.querySelectorAll('.event-time').forEach((el) => {
+        const start = el.getAttribute('data-start');
+        const end = el.getAttribute('data-end');
+        if (!start) return;
+        const local = document.createElement('span');
+        local.className = 'event-time-local';
+        local.textContent = ` (${formatLocal(start, end || undefined)})`;
+        el.appendChild(local);
+      });
+    })();
+  </script>
 </BaseLayout>

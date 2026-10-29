@@ -49,6 +49,21 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
+// Events created before the sessions field have only date/endDate.
+export const EVENT_FIELDS = `
+  _id,
+  title,
+  "sessions": select(
+    count(sessions) > 0 => sessions[]{start, end},
+    defined(date) => [{"start": date, "end": endDate}],
+    []
+  ),
+  location,
+  description,
+  link,
+  isPast
+`;
+
 // Type definitions
 export interface Work {
   _id: string;
