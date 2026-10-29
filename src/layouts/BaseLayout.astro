@@ -100,6 +100,20 @@ const faviconUrl = profile?.favicon?.asset
         color: var(--color-text-main);
       }
 
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      a:focus {
+        outline: none;
+      }
+
+      /* Keyboard users still need to see where focus is. */
+      a:focus-visible {
+        outline: 1px solid var(--color-text-muted);
+        outline-offset: 4px;
+      }
+
       /* Subtle image fade-in */
       img {
         opacity: 1;
@@ -170,36 +184,36 @@ const faviconUrl = profile?.favicon?.asset
         <div class="hidden md:flex items-center gap-x-8 flex-shrink-0">
           <a
             href={link('/')}
-            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
-            style={`color: var(--color-text-main); ${(currentPath === baseUrl || currentPath === `${baseUrl}/`) ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
+            class="text-[11px] uppercase tracking-gallery transition-opacity duration-500 ease-out hover:opacity-70 font-light"
+            style={`color: var(--color-text-main); ${(currentPath === baseUrl || currentPath === `${baseUrl}/`) ? 'border-bottom: 1px solid var(--color-text-main);' : 'border-bottom: 1px solid transparent;'}`}
           >
             Home
           </a>
           <a
             href={link('/works/')}
-            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
-            style={`color: var(--color-text-main); ${currentPath.includes("/works") ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
+            class="text-[11px] uppercase tracking-gallery transition-opacity duration-500 ease-out hover:opacity-70 font-light"
+            style={`color: var(--color-text-main); ${currentPath.includes("/works") ? 'border-bottom: 1px solid var(--color-text-main);' : 'border-bottom: 1px solid transparent;'}`}
           >
             Selected Works
           </a>
           <a
             href={link('/events/')}
-            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
-            style={`color: var(--color-text-main); ${currentPath.includes("/events") ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
+            class="text-[11px] uppercase tracking-gallery transition-opacity duration-500 ease-out hover:opacity-70 font-light"
+            style={`color: var(--color-text-main); ${currentPath.includes("/events") ? 'border-bottom: 1px solid var(--color-text-main);' : 'border-bottom: 1px solid transparent;'}`}
           >
             Events
           </a>
           <a
             href={link('/about/')}
-            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
-            style={`color: var(--color-text-main); ${currentPath.includes("/about") ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
+            class="text-[11px] uppercase tracking-gallery transition-opacity duration-500 ease-out hover:opacity-70 font-light"
+            style={`color: var(--color-text-main); ${currentPath.includes("/about") ? 'border-bottom: 1px solid var(--color-text-main);' : 'border-bottom: 1px solid transparent;'}`}
           >
             About
           </a>
           <a
             href={link('/contact/')}
-            class="text-[11px] uppercase tracking-gallery transition-all duration-500 ease-out hover:tracking-[0.35em] font-light"
-            style={`color: var(--color-text-main); ${currentPath.includes("/contact") ? 'border-bottom: 1px solid var(--color-text-main);' : ''}`}
+            class="text-[11px] uppercase tracking-gallery transition-opacity duration-500 ease-out hover:opacity-70 font-light"
+            style={`color: var(--color-text-main); ${currentPath.includes("/contact") ? 'border-bottom: 1px solid var(--color-text-main);' : 'border-bottom: 1px solid transparent;'}`}
           >
             Contact
           </a>
