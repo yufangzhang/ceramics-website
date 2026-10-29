@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { sanityClient, urlFor, WORK_FIELDS, type Profile, type Work } from '../../lib/sanityClient';
+import { collectionPath, link } from '../../lib/paths';
+
+export async function getStaticPaths() {
+  const works = await sanityClient.fetch<Work[]>(
+    `*[_type == "work" && defined(slug.current)] { ${WORK_FIELDS} }`
+  );
+  return works.map((work) => ({
+    params: { slug: work.slug.current },
+    props: { work },
+  }));
+}
+
+interface Props {
+  work: Work;
+}
+
+const { work } = Astro.props;
+
+const related = work.collection
+  ? await sanityClient.fetch<Work[]>(
+      `*[_type == "work" && collection->slug.current == $collection && _id != $id]
+        | order(order asc, _createdAt desc)[0...3] { ${WORK_FIELDS} }`,
+      { collection: work.collection.slug, id: work._id }
+    )
+  : [];
+
+const profile = await sanityClient.fetch<Profile>(
+  "*[_type == 'profile' && _id == 'profile'][0] { email }"
+);
+
+const enquiryHref = profile?.email
+  ? `mailto:${profile.email}?subject=${encodeURIComponent(`Enquiry: ${work.title}`)}`
+  : link('/contact/');
+
+const shareImage = urlFor(work.images[0]).width(1200).height(630).fit('crop').format('jpg').url();
+---
+
+<BaseLayout
+  title={`${work.title} - Yufang Zhang Ceramics`}
+  description={work.description || `${work.title}, ${work.year}`}
+  image={shareImage}
+>
+  <article class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-16 items-start">
+      <!-- Images, stacked -->
+      <div class="space-y-12">
+        {work.images.map((image, index) => (
+          <figure>
+            <img
+              src={urlFor(image).width(1600).format('webp').quality(85).url()}
+              alt={image.caption || work.title}
+              class="w-full h-auto object-contain bg-gallery-white"
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+            {image.caption && (
+              <figcaption class="mt-3 text-[10px] uppercase tracking-[0.2em]" style="color: var(--color-text-muted);">
+                {image.caption}
+              </figcaption>
+            )}
+          </figure>
+        ))}
+      </div>
+
+      <!-- Details -->
+      <div class="lg:sticky lg:top-40 space-y-8">
+        {work.collection && (
+          <a
+            href={collectionPath(work.collection.slug)}
+            class="text-[10px] uppercase tracking-[0.3em] hover:opacity-70 transition-opacity"
+            style="color: var(--color-text-muted);"
+          >
+            {work.collection.title} →
+          </a>
+        )}
+
+        <div class="space-y-3">
+          <h2 class="text-4xl font-serif italic">{work.title}</h2>
+          <p class="text-[10px] uppercase tracking-[0.3em]" style="color: var(--color-text-muted);">
+            {work.year}{work.dimensions ? ` • ${work.dimensions}` : ''}
+          </p>
+        </div>
+
+        {work.description && (
+          <div class="space-y-4">
+            {work.description.split('\n\n').map((paragraph) => (
+              <p class="text-base font-light leading-[1.9]">{paragraph}</p>
+            ))}
+          </div>
+        )}
+
+        <dl class="pt-8 space-y-3 text-sm font-light" style="border-top: 1px solid var(--color-line);">
+          {work.materials && (
+            <div class="flex gap-4">
+              <dt class="w-32" style="color: var(--color-text-muted);">Materials</dt>
+              <dd>{work.materials}</dd>
+            </div>
+          )}
+          <div class="flex gap-4">
+            <dt class="w-32" style="color: var(--color-text-muted);">Dishwasher safe</dt>
+            <dd>{work.dishwasherSafe ? 'Yes' : 'No'}</dd>
+          </div>
+          <div class="flex gap-4">
+            <dt class="w-32" style="color: var(--color-text-muted);">Status</dt>
+            <dd>{work.sold ? 'Sold' : 'Available'}</dd>
+          </div>
+        </dl>
+
+        {!work.sold && (
+          <a href={enquiryHref} class="btn-zen inline-block">Enquire</a>
+        )}
+      </div>
+    </div>
+
+    {related.length > 0 && (
+      <section class="mt-40">
+        <div class="flex items-baseline gap-4 mb-16">
+          <h2 class="text-[10px] uppercase tracking-[0.4em] font-sans not-italic">
+            More from {work.collection!.title}
+          </h2>
+          <div class="h-[1px] flex-grow" style="background-color: var(--color-line);"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-24">
+          {related.map((relatedWork) => <ProjectCard work={relatedWork} />)}
+        </div>
+      </section>
+    )}
+  </article>
+</BaseLayout>

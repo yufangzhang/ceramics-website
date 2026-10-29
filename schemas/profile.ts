@@ -39,6 +39,15 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'heroImage',
+      title: 'Home Hero Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      description: 'Large image at the top of the home page. If not provided, the first featured work image is used.',
+    }),
+    defineField({
       name: 'aboutMe',
       title: 'About Me',
       type: 'text',

@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { sanityClient, urlFor, WORK_FIELDS, type Collection, type Work } from '../../lib/sanityClient';
+
+export async function getStaticPaths() {
+  const collections = await sanityClient.fetch<Collection[]>(
+    `*[_type == "collection" && defined(slug.current)] {
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      coverImage
+    }`
+  );
+  return collections.map((collection) => ({
+    params: { slug: collection.slug },
+    props: { collection },
+  }));
+}
+
+interface Props {
+  collection: Collection;
+}
+
+const { collection } = Astro.props;
+
+const works = await sanityClient.fetch<Work[]>(
+  `*[_type == "work" && collection._ref == $id] | order(order asc, _createdAt desc) { ${WORK_FIELDS} }`,
+  { id: collection._id }
+);
+
+const cover = collection.coverImage ?? works[0]?.images[0];
+const shareImage = cover
+  ? urlFor(cover).width(1200).height(630).fit('crop').format('jpg').url()
+  : undefined;
+---
+
+<BaseLayout
+  title={`${collection.title} - Yufang Zhang Ceramics`}
+  description={collection.description || collection.title}
+  image={shareImage}
+>
+  <section class="max-w-2xl mx-auto text-center pt-6 pb-20">
+    <p class="text-[10px] uppercase tracking-[0.4em] mb-6" style="color: var(--color-text-muted);">
+      Collection
+    </p>
+    <h2 class="text-4xl font-serif italic mb-8">{collection.title}</h2>
+    {collection.description?.split('\n\n').map((paragraph) => (
+      <p class="text-base font-light leading-[1.9] mb-4" style="color: var(--color-text-muted);">
+        {paragraph}
+      </p>
+    ))}
+  </section>
+
+  <section class="py-12">
+    {works.length === 0 ? (
+      <p class="text-center text-lg font-light" style="color: var(--color-text-muted);">
+        No works in this collection yet.
+      </p>
+    ) : (
+      <div class="columns-1 md:columns-2 lg:columns-3 gap-x-12">
+        {works.map((work) => (
+          <div class="break-inside-avoid mb-32">
+            <ProjectCard work={work} />
+          </div>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

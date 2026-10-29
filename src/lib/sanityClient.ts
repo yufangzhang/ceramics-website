@@ -49,6 +49,23 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
+export const WORK_FIELDS = `
+  _id,
+  title,
+  slug,
+  year,
+  dimensions,
+  category,
+  "collection": collection->{title, "slug": slug.current},
+  featured,
+  images,
+  description,
+  materials,
+  dishwasherSafe,
+  sold,
+  order
+`;
+
 // Events created before the sessions field have only date/endDate.
 export const EVENT_FIELDS = `
   _id,
@@ -65,6 +82,31 @@ export const EVENT_FIELDS = `
 `;
 
 // Type definitions
+export interface SanityImage {
+  asset: {
+    _ref: string;
+  };
+  hotspot?: {
+    x: number;
+    y: number;
+  };
+  caption?: string;
+}
+
+export interface CollectionRef {
+  title: string;
+  slug: string;
+}
+
+export interface Collection {
+  _id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  coverImage?: SanityImage;
+  order?: number;
+}
+
 export interface Work {
   _id: string;
   title: string;
@@ -74,16 +116,9 @@ export interface Work {
   year: number;
   dimensions?: string;
   category: 'vase' | 'tableware' | 'cups' | 'teaware' | 'other';
-  images: Array<{
-    asset: {
-      _ref: string;
-    };
-    hotspot?: {
-      x: number;
-      y: number;
-    };
-    caption?: string;
-  }>;
+  collection?: CollectionRef;
+  featured?: boolean;
+  images: SanityImage[];
   description?: string;
   materials?: string;
   dishwasherSafe?: boolean;
@@ -91,30 +126,15 @@ export interface Work {
   order?: number;
 }
 
-export interface HomeShowcase {
-  _id: string;
-  title: string;
-  year: number;
-  dimensions?: string;
-  images: Array<{
-    asset: {
-      _ref: string;
-    };
-    hotspot?: {
-      x: number;
-      y: number;
-    };
-    caption?: string;
-  }>;
-  description?: string;
-  order: number;
+export interface EventSession {
+  start: string;
+  end?: string;
 }
 
 export interface Event {
   _id: string;
   title: string;
-  date: string;
-  endDate?: string;
+  sessions: EventSession[];
   location: string;
   description?: string;
   link?: string;
@@ -135,6 +155,7 @@ export interface Profile {
   };
   homeIntroHeading?: string;
   homeIntroBody?: string;
+  heroImage?: SanityImage;
   aboutMe: string;
   profileImage: {
     asset: {

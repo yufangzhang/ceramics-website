@@ -50,6 +50,19 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'collection',
+      title: 'Collection',
+      type: 'reference',
+      to: [{type: 'collection'}],
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Featured on Home Page',
+      type: 'boolean',
+      description: 'If no works are featured, the first three by display order are shown.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'images',
       title: 'Images',
       type: 'array',
@@ -114,12 +127,13 @@ export default defineType({
       images: 'images',
       sold: 'sold',
       order: 'order',
+      featured: 'featured',
     },
     prepare(selection) {
-      const {title, year, category, images, sold, order} = selection
+      const {title, year, category, images, sold, order, featured} = selection
       const orderPrefix = order !== 999 ? `[${order}] ` : ''
       return {
-        title: title,
+        title: featured ? `★ ${title}` : title,
         subtitle: `${orderPrefix}${year} • ${category}${sold ? ' • SOLD' : ''}`,
         media: images?.[0],
       }

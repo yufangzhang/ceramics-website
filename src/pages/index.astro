@@ -1,67 +1,163 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { sanityClient, type HomeShowcase, type Profile } from '../lib/sanityClient';
-
-const works = await sanityClient.fetch<HomeShowcase[]>(
-  `*[_type == "homeShowcase"] | order(order asc) {
-    _id,
-    title,
-    year,
-    dimensions,
-    images,
-    description,
-    order
-  }`
-);
+import {
+  sanityClient,
+  urlFor,
+  WORK_FIELDS,
+  EVENT_FIELDS,
+  type Collection,
+  type Event,
+  type Profile,
+  type SanityImage,
+  type Work,
+} from '../lib/sanityClient';
+import { formatSession, formatYearForEvent, groupEvents } from '../lib/eventUtils';
+import { collectionPath, link } from '../lib/paths';
 
 const profile = await sanityClient.fetch<Profile>(
   `*[_type == "profile" && _id == "profile"][0] {
     _id,
     homeIntroHeading,
-    homeIntroBody
+    homeIntroBody,
+    heroImage,
+    aboutMe,
+    profileImage
   }`
 );
+
+let works = await sanityClient.fetch<Work[]>(
+  `*[_type == "work" && featured == true] | order(order asc, _createdAt desc) { ${WORK_FIELDS} }`
+);
+if (works.length === 0) {
+  works = await sanityClient.fetch<Work[]>(
+    `*[_type == "work"] | order(order asc, _createdAt desc)[0...3] { ${WORK_FIELDS} }`
+  );
+}
+
+const collections = await sanityClient.fetch<Array<Collection & { firstWorkImage?: SanityImage }>>(
+  `*[_type == "collection"] | order(order asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    coverImage,
+    "firstWorkImage": *[_type == "work" && references(^._id)] | order(order asc, _createdAt desc)[0].images[0]
+  }`
+);
+
+const events = await sanityClient.fetch<Event[]>(
+  `*[_type == "event"] { ${EVENT_FIELDS} }`
+);
+const nextEvent = groupEvents(events, new Date()).upcoming[0];
+
+const heading = profile?.homeIntroHeading ?? 'Functional forms inspired by Eastern minimalism.';
+const body = profile?.homeIntroBody ??
+  'Hand-painted and wheel-thrown in Chiswick, my work explores the intersection of classical tradition and the quiet rituals of daily life.';
+const heroImage = profile?.heroImage ?? works[0]?.images[0];
+const shareImage = heroImage
+  ? urlFor(heroImage).width(1200).height(630).fit('crop').format('jpg').url()
+  : undefined;
+
+const firstSentence = (text?: string) => text?.split(/(?<=[.!?])\s/)[0];
+const aboutExcerpt = profile?.aboutMe?.split('\n\n')[0];
 ---
 
-<BaseLayout title="Yufang Zhang Ceramics">
-  <!-- Hero Section -->
-  <section class="text-center pt-6 pb-12">
-    {profile?.homeIntroHeading && profile?.homeIntroBody ? (
-      <div class="max-w-xl mx-auto">
-        <h2 class="text-xl font-medium text-[#45413E] tracking-wide mb-4">
-          {profile.homeIntroHeading}
-        </h2>
-        <p class="text-base font-light text-[#918C86] leading-relaxed tracking-wide">
-          {profile.homeIntroBody}
-        </p>
-      </div>
-    ) : (
-      <div class="max-w-xl mx-auto">
-        <h2 class="text-xl font-medium text-[#45413E] tracking-wide mb-4">
-          Functional forms inspired by Eastern minimalism.
-        </h2>
-        <p class="text-base font-light text-[#918C86] leading-relaxed tracking-wide">
-          Hand-painted and wheel-thrown in Chiswick, my work explores the intersection of classical tradition and the quiet rituals of daily life.
-        </p>
+<BaseLayout title="Yufang Zhang Ceramics" description={body} image={shareImage}>
+  <!-- Hero -->
+  <section class="pb-32">
+    {heroImage && (
+      <div class="overflow-hidden bg-gallery-white mb-16">
+        <img
+          src={urlFor(heroImage).width(2000).height(1100).fit('crop').format('webp').quality(85).url()}
+          alt=""
+          class="w-full h-[60vh] md:h-[75vh] object-cover"
+          loading="eager"
+        />
       </div>
     )}
+    <div class="max-w-xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-serif italic mb-6">{heading}</h2>
+      <p class="text-base font-light text-[#918C86] leading-relaxed tracking-wide mb-12">{body}</p>
+      <a href={link('/works/')} class="btn-zen inline-block">View the work</a>
+    </div>
   </section>
 
-  <!-- Gallery Grid -->
-  <section class="py-20">
-    {works.length === 0 ? (
-      <div class="text-center py-32">
-        <p class="text-lg font-light" style="color: var(--color-text-muted); letter-spacing: 0.01em;">
-          No showcase items yet. Add some in the Sanity Studio under "Home Showcase"!
-        </p>
-      </div>
-    ) : (
+  <!-- Selected Work -->
+  {works.length > 0 && (
+    <section class="py-24">
+      <h2 class="text-[10px] uppercase tracking-[0.4em] font-sans not-italic text-center mb-20">Selected Work</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-32">
-        {works.map((work) => (
-          <ProjectCard work={work} />
-        ))}
+        {works.map((work) => <ProjectCard work={work} />)}
       </div>
-    )}
-  </section>
+    </section>
+  )}
+
+  <!-- Collections -->
+  {collections.length > 0 && (
+    <section class="py-24" style="border-top: 1px solid var(--color-line);">
+      <h2 class="text-[10px] uppercase tracking-[0.4em] font-sans not-italic text-center mb-20">Collections</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
+        {collections.map((collection) => {
+          const cover = collection.coverImage ?? collection.firstWorkImage;
+          return (
+            <a href={collectionPath(collection.slug)} class="group flex flex-col">
+              {cover && (
+                <div class="mb-6 overflow-hidden bg-gallery-white">
+                  <img
+                    src={urlFor(cover).width(900).height(1100).fit('crop').format('webp').quality(85).url()}
+                    alt={collection.title}
+                    class="w-full aspect-[9/11] object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <h3 class="text-xl font-serif italic mb-2">{collection.title}</h3>
+              {collection.description && (
+                <p class="text-sm font-light leading-relaxed" style="color: var(--color-text-muted);">
+                  {firstSentence(collection.description)}
+                </p>
+              )}
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  <!-- Next Event -->
+  {nextEvent && (
+    <section class="py-24 text-center" style="border-top: 1px solid var(--color-line);">
+      <h2 class="text-[10px] uppercase tracking-[0.4em] font-sans not-italic mb-10">Next Event</h2>
+      <h3 class="text-3xl font-serif italic mb-4">{nextEvent.title}</h3>
+      {nextEvent.sessions?.[0] && (
+        <p class="text-[10px] uppercase tracking-[0.3em] mb-2" style="color: var(--color-text-muted);">
+          {formatSession(nextEvent.sessions[0])}, {formatYearForEvent(nextEvent)}
+        </p>
+      )}
+      <p class="text-sm font-light italic mb-10" style="color: var(--color-text-muted);">{nextEvent.location}</p>
+      <a href={link('/events/')} class="btn-zen inline-block">Event details</a>
+    </section>
+  )}
+
+  <!-- About the Maker -->
+  {profile?.profileImage && aboutExcerpt && (
+    <section class="py-24" style="border-top: 1px solid var(--color-line);">
+      <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div class="overflow-hidden bg-gallery-white">
+          <img
+            src={urlFor(profile.profileImage).width(1000).format('webp').quality(85).url()}
+            alt="Yufang Zhang"
+            class="w-full h-auto object-contain"
+            loading="lazy"
+          />
+        </div>
+        <div>
+          <h2 class="text-[10px] uppercase tracking-[0.4em] font-sans not-italic mb-8">About the Maker</h2>
+          <p class="text-base font-light leading-[1.9] mb-10">{aboutExcerpt}</p>
+          <a href={link('/about/')} class="btn-zen inline-block">More about the practice</a>
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>

@@ -31,9 +31,9 @@ export default defineConfig({
               ),
             S.divider(),
             S.listItem()
-              .title('Home Showcase')
-              .schemaType('homeShowcase')
-              .child(S.documentTypeList('homeShowcase').title('Home Showcase')),
+              .title('Collections')
+              .schemaType('collection')
+              .child(S.documentTypeList('collection').title('Collections')),
             S.listItem()
               .title('Selected Works')
               .schemaType('work')

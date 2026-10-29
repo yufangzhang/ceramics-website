@@ -1,6 +1,6 @@
 import work from './work'
 import event from './event'
 import profile from './profile'
-import homeShowcase from './homeShowcase'
+import collection from './collection'
 
-export const schemaTypes = [profile, homeShowcase, work, event]
+export const schemaTypes = [profile, collection, work, event]
